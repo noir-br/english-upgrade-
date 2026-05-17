@@ -1,0 +1,1889 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0A0A0F">
+<title>English Upgrade</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0A0A0F;
+  --bg2: #13131C;
+  --bg3: #1C1C2A;
+  --bg4: #242436;
+  --accent: #4AE59A;
+  --accent2: #3BC47F;
+  --accent-dim: rgba(74,229,154,0.12);
+  --accent-dim2: rgba(74,229,154,0.06);
+  --blue: #5B8AF0;
+  --blue-dim: rgba(91,138,240,0.12);
+  --amber: #F0A94A;
+  --amber-dim: rgba(240,169,74,0.12);
+  --coral: #F07060;
+  --coral-dim: rgba(240,112,96,0.12);
+  --purple: #9B7CF0;
+  --purple-dim: rgba(155,124,240,0.12);
+  --text: #F0F0F8;
+  --text2: rgba(240,240,248,0.6);
+  --text3: rgba(240,240,248,0.35);
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --nav-h: 72px;
+  --header-h: 64px;
+  --radius: 20px;
+  --radius-sm: 12px;
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: var(--font-body); }
+
+/* ── App shell ── */
+#app { display: flex; flex-direction: column; height: 100vh; height: 100dvh; max-width: 430px; margin: 0 auto; position: relative; overflow: hidden; }
+
+/* ── Header ── */
+.header { flex-shrink: 0; height: var(--header-h); padding: 0 20px; display: flex; align-items: center; justify-content: space-between; background: var(--bg); border-bottom: 1px solid var(--border); position: relative; z-index: 10; }
+.header-logo { font-family: var(--font-display); font-size: 22px; font-weight: 800; color: var(--accent); letter-spacing: -0.5px; }
+.header-logo span { color: var(--text3); font-weight: 400; font-size: 14px; margin-left: 4px; font-family: var(--font-body); }
+.streak-badge { display: flex; align-items: center; gap: 6px; background: var(--amber-dim); border: 1px solid rgba(240,169,74,0.2); border-radius: 999px; padding: 6px 12px; font-size: 13px; font-weight: 500; color: var(--amber); }
+
+/* ── Screens ── */
+.screens { flex: 1; overflow: hidden; position: relative; }
+.screen { position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; padding: 20px 20px calc(var(--nav-h) + 20px); display: none; scrollbar-width: none; scroll-behavior: smooth; }
+.screen::-webkit-scrollbar { display: none; }
+.screen.active { display: block; }
+
+/* ── Bottom Nav ── */
+.bottom-nav { flex-shrink: 0; height: var(--nav-h); background: var(--bg2); border-top: 1px solid var(--border); display: flex; align-items: center; padding: 0 4px 8px; position: relative; z-index: 10; }
+.nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 4px; cursor: pointer; border-radius: var(--radius-sm); transition: all 0.2s; border: none; background: none; }
+.nav-item .nav-icon { font-size: 22px; transition: transform 0.2s; }
+.nav-item .nav-label { font-size: 10px; font-family: var(--font-body); color: var(--text3); font-weight: 500; letter-spacing: 0.3px; transition: color 0.2s; }
+.nav-item.active .nav-label { color: var(--accent); }
+.nav-item.active .nav-icon { transform: scale(1.15); }
+
+/* ── Cards ── */
+.card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; margin-bottom: 14px; }
+.card.accent-border { border-color: rgba(74,229,154,0.3); }
+.card-label { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text3); margin-bottom: 10px; }
+.card-title { font-family: var(--font-display); font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 6px; line-height: 1.3; }
+.card-body { font-size: 14px; color: var(--text2); line-height: 1.6; }
+
+/* ── Screen title ── */
+.screen-header { margin-bottom: 20px; }
+.screen-title { font-family: var(--font-display); font-size: 28px; font-weight: 800; color: var(--text); line-height: 1.1; }
+.screen-sub { font-size: 14px; color: var(--text3); margin-top: 4px; }
+
+/* ── Home screen ── */
+.xp-bar-wrap { background: var(--bg3); border-radius: 999px; height: 8px; margin: 10px 0 4px; overflow: hidden; }
+.xp-bar { height: 8px; border-radius: 999px; background: linear-gradient(90deg, var(--accent2), var(--accent)); transition: width 0.6s cubic-bezier(.34,1.56,.64,1); }
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+.stat-card { background: var(--bg3); border-radius: var(--radius-sm); padding: 16px; border: 1px solid var(--border); }
+.stat-val { font-family: var(--font-display); font-size: 28px; font-weight: 800; color: var(--text); }
+.stat-label { font-size: 12px; color: var(--text3); margin-top: 2px; }
+.stat-icon { font-size: 20px; margin-bottom: 6px; }
+.module-list { display: flex; flex-direction: column; gap: 10px; }
+.module-btn { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; display: flex; align-items: center; gap: 14px; cursor: pointer; transition: all 0.15s; width: 100%; text-align: left; }
+.module-btn:active { transform: scale(0.97); background: var(--bg4); }
+.module-icon-wrap { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.module-info { flex: 1; }
+.module-name { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: var(--text); }
+.module-desc { font-size: 12px; color: var(--text3); margin-top: 2px; }
+.module-arrow { color: var(--text3); font-size: 16px; }
+
+/* ── Badge chips ── */
+.chip { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; margin-bottom: 10px; }
+.chip-green { background: var(--accent-dim); color: var(--accent); }
+.chip-blue { background: var(--blue-dim); color: var(--blue); }
+.chip-amber { background: var(--amber-dim); color: var(--amber); }
+.chip-coral { background: var(--coral-dim); color: var(--coral); }
+.chip-purple { background: var(--purple-dim); color: var(--purple); }
+
+/* ── Imersão ── */
+.imersao-item { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+.imersao-item:last-child { border-bottom: none; }
+.imersao-emoji { font-size: 24px; width: 36px; flex-shrink: 0; padding-top: 2px; }
+.imersao-body .title { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.imersao-body .desc { font-size: 13px; color: var(--text2); line-height: 1.55; }
+
+/* ── Flashcard screen ── */
+.flashcard-big { background: var(--bg2); border: 1px solid var(--border2); border-radius: 24px; padding: 32px 24px; text-align: center; min-height: 200px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; cursor: pointer; margin-bottom: 16px; transition: all 0.2s; position: relative; overflow: hidden; }
+.flashcard-big::before { content: ''; position: absolute; top: -40px; right: -40px; width: 120px; height: 120px; border-radius: 50%; background: var(--accent-dim2); }
+.flashcard-big:active { transform: scale(0.98); }
+.fc-word { font-family: var(--font-display); font-size: 36px; font-weight: 800; color: var(--text); }
+.fc-sentence { font-size: 14px; color: var(--text3); line-height: 1.5; font-style: italic; }
+.fc-translation { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: var(--accent); display: none; margin-top: 6px; }
+.fc-tap-hint { font-size: 12px; color: var(--text3); margin-top: 8px; }
+.fc-btns { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+.fc-rate-btn { padding: 14px 0; border-radius: var(--radius-sm); border: 1px solid var(--border2); background: var(--bg3); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s; font-family: var(--font-body); display: none; }
+.fc-rate-btn:active { transform: scale(0.95); }
+.fc-rate-btn.hard { color: var(--coral); border-color: rgba(240,112,96,0.3); }
+.fc-rate-btn.ok { color: var(--text2); }
+.fc-rate-btn.easy { color: var(--accent); border-color: rgba(74,229,154,0.3); }
+.fc-counter { text-align: center; font-size: 13px; color: var(--text3); margin-bottom: 12px; }
+.progress-row { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+.prog-bar-bg { flex: 1; background: var(--bg3); border-radius: 999px; height: 6px; overflow: hidden; }
+.prog-bar-fill { height: 6px; border-radius: 999px; background: linear-gradient(90deg, var(--accent2), var(--accent)); transition: width 0.4s; }
+.prog-label { font-size: 12px; color: var(--text3); white-space: nowrap; }
+
+/* ── Shadowing ── */
+.shadow-phrase-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: var(--radius); padding: 24px; margin-bottom: 16px; position: relative; overflow: hidden; }
+.shadow-phrase-card::after { content: ''; position: absolute; bottom: -20px; left: -20px; width: 100px; height: 100px; border-radius: 50%; background: var(--blue-dim); }
+.shadow-quote { font-family: var(--font-display); font-size: 18px; font-weight: 700; color: var(--text); line-height: 1.4; margin-bottom: 8px; position: relative; z-index: 1; }
+.shadow-author { font-size: 12px; color: var(--text3); position: relative; z-index: 1; }
+.step-list { display: flex; flex-direction: column; gap: 0; }
+.step-item { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+.step-item:last-child { border-bottom: none; }
+.step-num { width: 28px; height: 28px; border-radius: 8px; background: var(--accent-dim); color: var(--accent); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: var(--font-display); }
+.step-text { font-size: 13px; color: var(--text2); line-height: 1.55; padding-top: 4px; }
+.step-text strong { color: var(--text); font-weight: 500; }
+textarea.shadow-input { width: 100%; background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 14px; font-size: 14px; font-family: var(--font-body); color: var(--text); resize: none; outline: none; margin-bottom: 12px; }
+textarea.shadow-input:focus { border-color: rgba(74,229,154,0.4); }
+textarea.shadow-input::placeholder { color: var(--text3); }
+
+/* ── Rotina ── */
+.check-item { display: flex; align-items: center; gap: 14px; padding: 16px; background: var(--bg3); border-radius: var(--radius-sm); margin-bottom: 10px; cursor: pointer; border: 1px solid var(--border); transition: all 0.15s; }
+.check-item:active { transform: scale(0.98); }
+.check-item.done { opacity: 0.5; }
+.check-circle { width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--border2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.2s; }
+.check-circle.checked { background: var(--accent); border-color: var(--accent); }
+.check-circle.checked::after { content: '✓'; font-size: 13px; color: #000; font-weight: 700; }
+.check-text { font-size: 14px; color: var(--text); flex: 1; }
+.check-text.done { text-decoration: line-through; color: var(--text3); }
+.check-time { font-size: 12px; color: var(--text3); }
+.day-ring { width: 80px; height: 80px; margin: 0 auto 16px; }
+
+/* ── Dicas ── */
+.dica-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; display: flex; gap: 14px; }
+.dica-icon { font-size: 24px; flex-shrink: 0; }
+.dica-body .title { font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.dica-body .desc { font-size: 13px; color: var(--text2); line-height: 1.55; }
+
+/* ── Buttons ── */
+.btn { width: 100%; padding: 16px; border-radius: var(--radius-sm); border: none; font-size: 15px; font-weight: 600; font-family: var(--font-display); cursor: pointer; transition: all 0.15s; }
+.btn:active { transform: scale(0.97); }
+.btn-accent { background: var(--accent); color: #000; }
+.btn-ghost { background: var(--bg3); color: var(--text2); border: 1px solid var(--border2); }
+.btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+
+/* ── Recursos ── */
+.resource-row { display: flex; gap: 14px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border); }
+.resource-row:last-child { border-bottom: none; }
+.resource-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.resource-name { font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--text); }
+.resource-desc { font-size: 12px; color: var(--text3); margin-top: 2px; }
+.resource-tag { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 999px; margin-left: 6px; }
+.tag-free { background: var(--accent-dim); color: var(--accent); }
+.tag-paid { background: var(--amber-dim); color: var(--amber); }
+
+/* ── Modo Foco ── */
+.focus-overlay { position: fixed; inset: 0; background: linear-gradient(135deg, #0A0A14, #1C1C2A); z-index: 150; display: none; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+.focus-overlay.active { display: flex; }
+.focus-container { text-align: center; max-width: 340px; width: 100%; }
+.focus-title { font-family: var(--font-display); font-size: 28px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+.focus-sub { font-size: 14px; color: var(--text2); margin-bottom: 32px; line-height: 1.5; }
+.focus-timer { font-family: var(--font-display); font-size: 72px; font-weight: 800; color: var(--accent); margin-bottom: 24px; letter-spacing: -2px; }
+.focus-progress-wrap { width: 100%; height: 6px; background: var(--bg3); border-radius: 999px; margin-bottom: 32px; overflow: hidden; }
+.focus-progress-bar { height: 6px; background: linear-gradient(90deg, var(--accent2), var(--accent)); border-radius: 999px; transition: width 0.3s linear; }
+.focus-btns { display: flex; gap: 12px; justify-content: center; margin-bottom: 24px; }
+.focus-btn { padding: 14px 24px; border-radius: var(--radius-sm); border: none; font-size: 15px; font-weight: 600; font-family: var(--font-display); cursor: pointer; transition: all 0.15s; }
+.focus-btn-primary { background: var(--accent); color: #000; }
+.focus-btn-secondary { background: var(--bg3); color: var(--text2); border: 1px solid var(--border2); }
+.focus-btn:active { transform: scale(0.97); }
+.focus-quote { font-size: 13px; color: var(--text3); font-style: italic; margin-bottom: 32px; line-height: 1.6; }
+.focus-ambient { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.ambient-btn { padding: 8px 14px; border-radius: 999px; border: 1px solid var(--border2); background: var(--bg3); color: var(--text3); font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.15s; font-family: var(--font-body); }
+.ambient-btn.active { background: var(--accent-dim); color: var(--accent); border-color: rgba(74,229,154,0.3); }
+.focus-summary { display: none; }
+.focus-summary.show { display: block; }
+.focus-summary-title { font-family: var(--font-display); font-size: 24px; font-weight: 800; color: var(--text); margin-bottom: 16px; }
+.focus-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+.focus-stat { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 16px; }
+.focus-stat-val { font-family: var(--font-display); font-size: 28px; font-weight: 800; color: var(--accent); }
+.focus-stat-label { font-size: 12px; color: var(--text3); margin-top: 4px; }
+.focus-mode-icon { font-size: 48px; margin-bottom: 16px; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.05);opacity:0.8} }
+
+/* ── Modo Foco ── */
+.focus-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 200; display: none; flex-direction: column; }
+.focus-overlay.active { display: flex; }
+.focus-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.focus-close { width: 36px; height: 36px; border-radius: 10px; background: var(--bg3); border: 1px solid var(--border2); color: var(--text2); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; font-family: var(--font-body); }
+.focus-close:active { transform: scale(0.93); }
+.focus-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+.focus-timer-display { font-family: var(--font-display); font-size: 64px; font-weight: 800; color: var(--text); margin-bottom: 12px; letter-spacing: -2px; }
+.focus-session-label { font-size: 14px; color: var(--text3); margin-bottom: 32px; }
+.focus-controls { display: flex; gap: 12px; margin-bottom: 32px; }
+.focus-btn { padding: 16px 28px; border-radius: var(--radius); border: 1px solid var(--border2); background: var(--bg3); color: var(--text); font-size: 15px; font-weight: 600; font-family: var(--font-display); cursor: pointer; transition: all 0.15s; }
+.focus-btn:active { transform: scale(0.96); }
+.focus-btn.primary { background: var(--accent); border-color: var(--accent); color: #000; }
+.focus-progress-wrap { width: 100%; max-width: 320px; height: 6px; background: var(--bg3); border-radius: 999px; overflow: hidden; margin-bottom: 24px; }
+.focus-progress-bar { height: 6px; background: linear-gradient(90deg, var(--accent2), var(--accent)); border-radius: 999px; transition: width 1s linear; }
+.focus-ambient { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 20px; }
+.ambient-btn { padding: 8px 14px; border-radius: 999px; border: 1px solid var(--border2); background: var(--bg3); color: var(--text3); font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.15s; font-family: var(--font-body); }
+.ambient-btn.active { background: var(--purple-dim); border-color: rgba(155,124,240,0.3); color: var(--purple); }
+.ambient-btn:active { transform: scale(0.95); }
+.focus-summary { display: none; flex-direction: column; align-items: center; padding: 32px 24px; text-align: center; }
+.focus-summary.show { display: flex; }
+.focus-summary-icon { font-size: 56px; margin-bottom: 16px; }
+.focus-summary-title { font-family: var(--font-display); font-size: 24px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+.focus-summary-stats { display: flex; gap: 20px; margin: 20px 0; }
+.focus-summary-stat { display: flex; flex-direction: column; align-items: center; }
+.focus-summary-val { font-family: var(--font-display); font-size: 32px; font-weight: 800; color: var(--accent); }
+.focus-summary-label { font-size: 12px; color: var(--text3); margin-top: 4px; }
+
+/* ── Intro / Splash ── */
+.intro-screen {
+  position: fixed; inset: 0; z-index: 999;
+  background: #0A0A0F;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 32px 28px;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.intro-screen.hide {
+  opacity: 0; transform: translateY(-30px); pointer-events: none;
+}
+.intro-logo-wrap {
+  display: flex; flex-direction: column; align-items: center;
+  margin-bottom: 40px;
+}
+.intro-icon {
+  width: 72px; height: 72px; border-radius: 22px;
+  background: linear-gradient(135deg, #1C2A1A, #0F1F0F);
+  border: 1px solid rgba(74,229,154,0.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36px; margin-bottom: 14px;
+  box-shadow: 0 0 40px rgba(74,229,154,0.15);
+  animation: introPulse 2s ease infinite;
+}
+@keyframes introPulse {
+  0%,100% { box-shadow: 0 0 40px rgba(74,229,154,0.15); }
+  50% { box-shadow: 0 0 60px rgba(74,229,154,0.3); }
+}
+.intro-title {
+  font-family: var(--font-display);
+  font-size: 26px; font-weight: 800;
+  color: var(--text); letter-spacing: -0.5px;
+  margin-bottom: 4px;
+}
+.intro-title span { color: var(--accent); }
+.intro-tagline {
+  font-size: 14px; color: var(--text3);
+  text-align: center; line-height: 1.5;
+}
+.intro-steps {
+  width: 100%; display: flex; flex-direction: column;
+  gap: 14px; margin-bottom: 40px;
+}
+.intro-step {
+  display: flex; align-items: center; gap: 14px;
+  opacity: 0; transform: translateX(-20px);
+  transition: all 0.4s ease;
+}
+.intro-step.show { opacity: 1; transform: translateX(0); }
+.intro-step-icon {
+  width: 44px; height: 44px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+}
+.intro-step-text .title {
+  font-family: var(--font-display);
+  font-size: 14px; font-weight: 700; color: var(--text);
+}
+.intro-step-text .desc {
+  font-size: 12px; color: var(--text3); margin-top: 2px;
+}
+.intro-start-btn {
+  width: 100%; padding: 18px;
+  border-radius: var(--radius-sm); border: none;
+  background: var(--accent); color: #000;
+  font-size: 16px; font-weight: 800;
+  font-family: var(--font-display);
+  cursor: pointer; transition: all 0.2s;
+  letter-spacing: 0.3px;
+  opacity: 0; animation: fadeInBtn 0.5s ease 2s forwards;
+}
+.intro-start-btn:active { transform: scale(0.97); }
+@keyframes fadeInBtn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.intro-skip {
+  margin-top: 14px; font-size: 12px; color: var(--text3);
+  cursor: pointer; text-align: center;
+  opacity: 0; animation: fadeInBtn 0.5s ease 2.3s forwards;
+}
+.intro-skip:hover { color: var(--text2); }
+
+/* ── Notificações & Conquistas ── */
+.notif-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+.notif-overlay.show { opacity: 1; pointer-events: all; }
+.notif-sheet { background: var(--bg2); border-radius: 24px 24px 0 0; padding: 24px 20px 36px; width: 100%; max-width: 430px; transform: translateY(100%); transition: transform 0.4s cubic-bezier(.34,1.2,.64,1); border-top: 1px solid var(--border2); }
+.notif-overlay.show .notif-sheet { transform: translateY(0); }
+.notif-handle { width: 40px; height: 4px; border-radius: 999px; background: var(--border2); margin: 0 auto 20px; }
+.notif-title { font-family: var(--font-display); font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+.notif-sub { font-size: 13px; color: var(--text2); margin-bottom: 20px; }
+.time-picker-row { display: flex; gap: 10px; align-items: center; margin-bottom: 16px; }
+.time-input { flex: 1; background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 14px; font-size: 22px; font-family: var(--font-display); font-weight: 700; color: var(--text); text-align: center; outline: none; }
+.time-input:focus { border-color: var(--accent); }
+.time-sep { font-size: 24px; font-weight: 800; color: var(--text3); }
+.notif-msg-input { width: 100%; background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--radius-sm); padding: 12px 14px; font-size: 14px; font-family: var(--font-body); color: var(--text); outline: none; margin-bottom: 16px; }
+.notif-msg-input:focus { border-color: var(--accent); }
+.notif-status { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: var(--radius-sm); margin-bottom: 16px; font-size: 13px; }
+.notif-status.active { background: var(--accent-dim); color: var(--accent); border: 1px solid rgba(74,229,154,0.25); }
+.notif-status.inactive { background: var(--bg3); color: var(--text3); border: 1px solid var(--border); }
+.notif-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.notif-dot.on { background: var(--accent); }
+.notif-dot.off { background: var(--text3); }
+
+/* Toast notification */
+.toast { position: fixed; top: 70px; left: 50%; transform: translateX(-50%) translateY(-20px); background: var(--bg2); border: 1px solid var(--accent); border-radius: 999px; padding: 12px 20px; font-size: 14px; font-weight: 600; color: var(--text); z-index: 200; opacity: 0; transition: all 0.3s; white-space: nowrap; max-width: 90vw; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* Conquistas */
+.achievement-popup { position: fixed; top: 70px; left: 50%; transform: translateX(-50%) scale(0.8); background: linear-gradient(135deg, var(--bg2), var(--bg3)); border: 1px solid rgba(74,229,154,0.4); border-radius: 20px; padding: 20px 24px; z-index: 200; opacity: 0; transition: all 0.4s cubic-bezier(.34,1.56,.64,1); text-align: center; min-width: 240px; }
+.achievement-popup.show { opacity: 1; transform: translateX(-50%) scale(1); }
+.achievement-popup-icon { font-size: 40px; margin-bottom: 8px; }
+.achievement-popup-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); margin-bottom: 4px; }
+.achievement-popup-name { font-family: var(--font-display); font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+.achievement-popup-desc { font-size: 12px; color: var(--text2); }
+
+/* Achievements screen section */
+.achiev-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.achiev-card { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 12px; text-align: center; transition: all 0.2s; }
+.achiev-card.unlocked { border-color: rgba(74,229,154,0.3); background: var(--accent-dim); }
+.achiev-card.locked { opacity: 0.4; }
+.achiev-icon { font-size: 28px; margin-bottom: 6px; }
+.achiev-name { font-family: var(--font-display); font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+.achiev-desc { font-size: 10px; color: var(--text3); line-height: 1.4; }
+.achiev-unlocked-badge { font-size: 10px; font-weight: 700; color: var(--accent); margin-top: 4px; }
+
+.quiz-step { display: none; }
+.quiz-step.active { display: block; }
+.quiz-title { font-family: var(--font-display); font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+.quiz-sub { font-size: 14px; color: var(--text2); margin-bottom: 20px; line-height: 1.5; }
+.quiz-progress { display: flex; gap: 6px; margin-bottom: 24px; }
+.quiz-dot { flex: 1; height: 4px; border-radius: 999px; background: var(--border2); transition: background 0.3s; }
+.quiz-dot.done { background: var(--accent); }
+.option-btn { width: 100%; padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border2); background: var(--bg3); color: var(--text); font-size: 14px; font-family: var(--font-body); text-align: left; cursor: pointer; margin-bottom: 10px; transition: all 0.15s; display: flex; align-items: center; gap: 12px; }
+.option-btn:active { transform: scale(0.98); }
+.option-btn.selected { border-color: var(--accent); background: var(--accent-dim); color: var(--accent); }
+.option-emoji { font-size: 20px; flex-shrink: 0; }
+.option-text { flex: 1; }
+.option-title { font-weight: 600; font-size: 14px; }
+.option-desc { font-size: 12px; opacity: 0.7; margin-top: 2px; }
+.plan-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; margin-bottom: 12px; }
+.plan-week { display: flex; flex-direction: column; gap: 8px; }
+.plan-day { display: flex; gap: 12px; align-items: flex-start; padding: 12px; background: var(--bg3); border-radius: var(--radius-sm); border: 1px solid var(--border); }
+.plan-day-label { font-family: var(--font-display); font-size: 12px; font-weight: 700; color: var(--accent); width: 28px; flex-shrink: 0; padding-top: 2px; }
+.plan-day-tasks { flex: 1; }
+.plan-task { font-size: 13px; color: var(--text2); line-height: 1.5; }
+.plan-task + .plan-task { margin-top: 4px; }
+.plan-highlight { color: var(--text); font-weight: 500; }
+.plan-tag { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 999px; margin-left: 6px; }
+.plan-tag-green { background: var(--accent-dim); color: var(--accent); }
+.plan-tag-blue { background: var(--blue-dim); color: var(--blue); }
+.plan-tag-amber { background: var(--amber-dim); color: var(--amber); }
+.plan-tag-purple { background: var(--purple-dim); color: var(--purple); }
+
+/* ── Gráfico de Evolução ── */
+.graph-wrap { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; margin-bottom: 14px; }
+.graph-title { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 14px; }
+.graph-bars { display: flex; align-items: flex-end; justify-content: space-between; gap: 6px; height: 120px; margin-bottom: 8px; }
+.graph-bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; height: 100%; justify-content: flex-end; }
+.graph-bar { width: 100%; border-radius: 6px 6px 0 0; background: var(--accent-dim); border: 1px solid rgba(74,229,154,0.2); transition: height 0.6s cubic-bezier(.34,1.2,.64,1); min-height: 4px; }
+.graph-bar.today { background: var(--accent); border-color: var(--accent); }
+.graph-bar-val { font-size: 10px; font-weight: 700; color: var(--accent); }
+.graph-bar-day { font-size: 10px; color: var(--text3); }
+.stats-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.stats-box { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px; text-align: center; }
+.stats-box-val { font-family: var(--font-display); font-size: 22px; font-weight: 800; color: var(--accent); }
+.stats-box-label { font-size: 10px; color: var(--text3); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+/* ── Erros Clássicos ── */
+.mistake-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; margin-bottom: 12px; }
+.mistake-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.mistake-num { width: 28px; height: 28px; border-radius: 8px; background: var(--coral-dim); color: var(--coral); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: var(--font-display); }
+.mistake-topic { font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--text); }
+.mistake-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+.mistake-box { border-radius: var(--radius-sm); padding: 10px 12px; }
+.mistake-box.wrong { background: rgba(240,112,96,0.08); border: 1px solid rgba(240,112,96,0.2); }
+.mistake-box.right { background: var(--accent-dim); border: 1px solid rgba(74,229,154,0.2); }
+.mistake-box-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+.mistake-box.wrong .mistake-box-label { color: var(--coral); }
+.mistake-box.right .mistake-box-label { color: var(--accent); }
+.mistake-phrase { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.4; }
+.mistake-explanation { font-size: 12px; color: var(--text2); line-height: 1.5; padding: 8px 10px; background: var(--bg3); border-radius: 8px; }
+.mistake-tip { font-size: 11px; color: var(--accent); margin-top: 6px; font-weight: 500; }
+
+/* ── Animations ── */
+@keyframes fadeUp { from { opacity:0; transform: translateY(16px); } to { opacity:1; transform: translateY(0); } }
+
+.screen.active .card, .screen.active .stats-grid, .screen.active .module-list, .screen.active .screen-header { animation: fadeUp 0.3s ease both; }
+.screen.active .card:nth-child(2) { animation-delay: 0.04s; }
+.screen.active .card:nth-child(3) { animation-delay: 0.08s; }
+.screen.active .card:nth-child(4) { animation-delay: 0.12s; }
+
+/* ── SVG ring ── */
+.ring-bg { fill: none; stroke: var(--bg3); stroke-width: 8; }
+.ring-fill { fill: none; stroke: var(--accent); stroke-width: 8; stroke-linecap: round; transition: stroke-dashoffset 0.5s cubic-bezier(.34,1.56,.64,1); transform: rotate(-90deg); transform-origin: 50% 50%; }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- Intro Screen -->
+  <div class="intro-screen" id="intro-screen">
+    <div class="intro-logo-wrap">
+      <div class="intro-icon">🚀</div>
+      <div class="intro-title">English<span>Upgrade</span></div>
+      <div class="intro-tagline">Seu app completo para sair do zero<br>e falar inglês de verdade.</div>
+    </div>
+
+    <div class="intro-steps">
+      <div class="intro-step" id="istep-0">
+        <div class="intro-step-icon" style="background:var(--accent-dim);">🃏</div>
+        <div class="intro-step-text">
+          <div class="title">Vocabulário com Flashcards</div>
+          <div class="desc">Aprenda palavras com repetição espaçada — nunca mais esquece</div>
+        </div>
+      </div>
+      <div class="intro-step" id="istep-1">
+        <div class="intro-step-icon" style="background:var(--purple-dim);">🎙️</div>
+        <div class="intro-step-text">
+          <div class="title">Pronúncia com Shadowing</div>
+          <div class="desc">Imite nativos e desenvolva fluência oral rapidinho</div>
+        </div>
+      </div>
+      <div class="intro-step" id="istep-2">
+        <div class="intro-step-icon" style="background:var(--amber-dim);">🗺️</div>
+        <div class="intro-step-text">
+          <div class="title">Plano Personalizado</div>
+          <div class="desc">Rotina feita para seu nível, objetivo e tempo disponível</div>
+        </div>
+      </div>
+      <div class="intro-step" id="istep-3">
+        <div class="intro-step-icon" style="background:var(--blue-dim);">🏆</div>
+        <div class="intro-step-text">
+          <div class="title">Conquistas e Progresso</div>
+          <div class="desc">Acompanhe sua evolução e desbloqueie troféus</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="intro-start-btn" onclick="startApp()">Começar agora →</button>
+    <div class="intro-skip" onclick="startApp()">Já uso o app — pular intro</div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-logo">English<span>Upgrade</span></div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button onclick="openNotifSheet()" style="background:var(--amber-dim);border:1px solid rgba(240,169,74,0.2);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;color:var(--amber);cursor:pointer;display:flex;align-items:center;gap:6px;" id="notif-btn">🔔 Lembrete</button>
+      <div class="streak-badge">🔥 <span id="streak-count">0</span> dias</div>
+    </div>
+  </header>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Achievement popup -->
+  <div class="achievement-popup" id="achiev-popup">
+    <div class="achievement-popup-icon" id="achiev-icon">🏆</div>
+    <div class="achievement-popup-title">Conquista desbloqueada!</div>
+    <div class="achievement-popup-name" id="achiev-name">—</div>
+    <div class="achievement-popup-desc" id="achiev-desc">—</div>
+  </div>
+
+  <!-- Notification Sheet -->
+  <div class="notif-overlay" id="notif-overlay" onclick="closeNotifSheet(event)">
+    <div class="notif-sheet">
+      <div class="notif-handle"></div>
+      <div class="notif-title">🔔 Lembrete diário</div>
+      <div class="notif-sub">Escolha o horário que quer ser lembrado de estudar.</div>
+      <div class="time-picker-row">
+        <input class="time-input" id="notif-hour" type="number" min="0" max="23" value="20" maxlength="2">
+        <div class="time-sep">:</div>
+        <input class="time-input" id="notif-min" type="number" min="0" max="59" value="00" maxlength="2">
+      </div>
+      <input class="notif-msg-input" id="notif-msg" value="Hora do inglês! 🇺🇸 Não quebre sua sequência!" placeholder="Mensagem do lembrete...">
+      <div class="notif-status inactive" id="notif-status">
+        <div class="notif-dot off" id="notif-dot"></div>
+        <span id="notif-status-text">Nenhum lembrete ativo</span>
+      </div>
+      <button class="btn btn-accent" onclick="saveNotif()" style="margin-bottom:10px;">Ativar lembrete</button>
+      <button class="btn btn-ghost" onclick="cancelNotif()">Cancelar lembrete</button>
+    </div>
+  </div>
+
+  <!-- Screens -->
+  <div class="screens">
+
+    <!-- HOME -->
+    <div class="screen active" id="screen-home">
+      <div class="screen-header">
+        <div class="screen-title">Olá! 👋</div>
+        <div class="screen-sub">Pronto para estudar hoje?</div>
+      </div>
+
+      <div class="card accent-border" style="margin-bottom:14px;">
+        <div class="card-label">Seu progresso</div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;">
+          <span style="font-family:var(--font-display);font-size:15px;font-weight:700;color:var(--text);" id="level-text">Nível 1 — Iniciante</span>
+          <span style="font-size:12px;color:var(--text3);" id="xp-text">0 / 100 XP</span>
+        </div>
+        <div class="xp-bar-wrap"><div class="xp-bar" id="xp-bar" style="width:0%"></div></div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-val" id="stat-words">0</div><div class="stat-label">Palavras</div></div>
+        <div class="stat-card"><div class="stat-icon">🎯</div><div class="stat-val" id="stat-sessions">0</div><div class="stat-label">Sessões</div></div>
+        <div class="stat-card"><div class="stat-icon">⏱️</div><div class="stat-val" id="stat-mins">0</div><div class="stat-label">Minutos</div></div>
+        <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-val" id="stat-tasks">0</div><div class="stat-label">Tarefas</div></div>
+      </div>
+
+      <button class="module-btn" onclick="openFocusMode()" style="background:linear-gradient(135deg,var(--purple-dim),var(--accent-dim2));border-color:rgba(155,124,240,0.3);">
+        <div class="module-icon-wrap" style="background:var(--purple-dim);">🎯</div>
+        <div class="module-info"><div class="module-name">Modo Foco</div><div class="module-desc">25 min imersivos sem distrações</div></div>
+        <div class="module-arrow" style="color:var(--purple);">›</div>
+      </button>
+
+      <button class="btn btn-accent" onclick="startFocusMode()" style="margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:8px;">
+        <span style="font-size:18px;">🎯</span> Iniciar Modo Foco
+      </button>
+
+      <div class="card-label" style="margin-bottom:10px;">Módulos</div>
+      <div class="module-list">
+        <button class="module-btn" onclick="goTo('imersao')">
+          <div class="module-icon-wrap" style="background:var(--accent-dim);">🌊</div>
+          <div class="module-info"><div class="module-name">Imersão</div><div class="module-desc">Cerque-se do idioma</div></div>
+          <div class="module-arrow">›</div>
+        </button>
+        <button class="module-btn" onclick="goTo('flashcards')">
+          <div class="module-icon-wrap" style="background:var(--blue-dim);">🃏</div>
+          <div class="module-info"><div class="module-name">Flashcards</div><div class="module-desc">Vocabulário com repetição espaçada</div></div>
+          <div class="module-arrow">›</div>
+        </button>
+        <button class="module-btn" onclick="goTo('shadowing')">
+          <div class="module-icon-wrap" style="background:var(--purple-dim);">🎙️</div>
+          <div class="module-info"><div class="module-name">Shadowing</div><div class="module-desc">Fluência oral rápida</div></div>
+          <div class="module-arrow">›</div>
+        </button>
+        <button class="module-btn" onclick="goTo('rotina')">
+          <div class="module-icon-wrap" style="background:var(--amber-dim);">📅</div>
+          <div class="module-info"><div class="module-name">Rotina diária</div><div class="module-desc">Checklist e hábitos</div></div>
+          <div class="module-arrow">›</div>
+        </button>
+        <button class="module-btn" onclick="goTo('recursos')">
+          <div class="module-icon-wrap" style="background:var(--coral-dim);">🔗</div>
+          <div class="module-info"><div class="module-name">Recursos</div><div class="module-desc">Apps, canais e podcasts</div></div>
+          <div class="module-arrow">›</div>
+        </button>
+        <button class="module-btn" onclick="goTo('plano')" style="border-color:rgba(74,229,154,0.3);">
+          <div class="module-icon-wrap" style="background:var(--accent-dim);">🗺️</div>
+          <div class="module-info"><div class="module-name">Meu Plano</div><div class="module-desc">Plano personalizado para você</div></div>
+          <div class="module-arrow" style="color:var(--accent);">›</div>
+        </button>
+        <button class="module-btn" onclick="goTo('conquistas')">
+          <div class="module-icon-wrap" style="background:var(--amber-dim);">🏆</div>
+          <div class="module-info"><div class="module-name">Conquistas</div><div class="module-desc">Desbloqueie troféus estudando</div></div>
+          <div class="module-arrow">›</div>
+        </button>
+      </div>
+    </div>
+
+    <!-- IMERSÃO -->
+    <div class="screen" id="screen-imersao">
+      <div class="screen-header">
+        <div class="screen-title">🌊 Imersão</div>
+        <div class="screen-sub">O método mais eficaz — exposição constante</div>
+      </div>
+      <div class="card">
+        <div class="imersao-item">
+          <div class="imersao-emoji">📱</div>
+          <div class="imersao-body"><div class="title">Mude seu celular agora</div><div class="desc">Coloque o idioma do sistema em inglês. É o passo mais simples e um dos mais eficazes para criar exposição passiva constante.</div></div>
+        </div>
+        <div class="imersao-item">
+          <div class="imersao-emoji">🎬</div>
+          <div class="imersao-body"><div class="title">Séries com legenda em inglês</div><div class="desc">Não use legenda em português. Iniciante? Friends ou The Office. Avançado? Tente 10 min sem legenda nenhuma.</div></div>
+        </div>
+        <div class="imersao-item">
+          <div class="imersao-emoji">▶️</div>
+          <div class="imersao-body"><div class="title">YouTube em inglês</div><div class="desc">Siga criadores sobre seus interesses no idioma. Gaming, cozinha, tecnologia — o engajamento com o tema acelera o aprendizado.</div></div>
+        </div>
+        <div class="imersao-item">
+          <div class="imersao-emoji">📰</div>
+          <div class="imersao-body"><div class="title">Leitura extensiva</div><div class="desc">Reddit, BBC, artigos. Não pare para traduzir tudo — o contexto é o professor. Leia sobre o que você já acha interessante.</div></div>
+        </div>
+        <div class="imersao-item">
+          <div class="imersao-emoji">✍️</div>
+          <div class="imersao-body"><div class="title">Diário em inglês</div><div class="desc">3 frases por dia sobre o que aconteceu. Produzir o idioma fixa muito mais do que só consumir. Sem pressão de perfeição.</div></div>
+        </div>
+        <div class="imersao-item">
+          <div class="imersao-emoji">🎮</div>
+          <div class="imersao-body"><div class="title">Jogue em inglês</div><div class="desc">RPGs e jogos com narrativa são ótimos para vocabulário contextualizado. Mude o idioma do seu jogo favorito agora.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FLASHCARDS -->
+    <div class="screen" id="screen-flashcards">
+      <div class="screen-header">
+        <div class="screen-title">🃏 Flashcards</div>
+        <div class="screen-sub">Toque no cartão para ver a tradução</div>
+      </div>
+      <div class="progress-row">
+        <div class="prog-bar-bg"><div class="prog-bar-fill" id="fc-bar" style="width:0%"></div></div>
+        <div class="prog-label" id="fc-label">0/10</div>
+      </div>
+      <div class="flashcard-big" id="flashcard" onclick="revealCard()">
+        <div class="fc-word" id="fc-word">—</div>
+        <div class="fc-sentence" id="fc-sentence">carregando...</div>
+        <div class="fc-translation" id="fc-translation">—</div>
+        <div class="fc-tap-hint" id="fc-hint">toque para revelar</div>
+      </div>
+      <div class="fc-btns">
+        <button class="fc-rate-btn hard" id="btn-hard" onclick="rateCard('hard')">😓 Difícil</button>
+        <button class="fc-rate-btn ok" id="btn-ok" onclick="rateCard('ok')">😐 Ok</button>
+        <button class="fc-rate-btn easy" id="btn-easy" onclick="rateCard('easy')">😊 Fácil</button>
+      </div>
+      <div class="card">
+        <div class="card-label">Dica pro</div>
+        <div class="card-body">Para uma sessão completa de repetição espaçada, baixe o <strong style="color:var(--text);">Anki</strong> (grátis). Aprenda frases inteiras, não palavras isoladas — o cérebro memoriza contexto.</div>
+      </div>
+    </div>
+
+    <!-- SHADOWING -->
+    <div class="screen" id="screen-shadowing">
+      <div class="screen-header">
+        <div class="screen-title">🎙️ Shadowing</div>
+        <div class="screen-sub">O método mais rápido para fluência oral</div>
+      </div>
+      <div class="shadow-phrase-card">
+        <div class="chip chip-blue">Frase de hoje</div>
+        <div class="shadow-quote" id="shadow-phrase">"The most important thing is not to stop questioning."</div>
+        <div class="shadow-author" id="shadow-author">— Albert Einstein</div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-ghost" onclick="nextPhrase()">Próxima frase</button>
+        <button class="btn btn-accent" onclick="saveShadow()">Fiz o shadowing ✓</button>
+      </div>
+      <div class="card">
+        <div class="card-label">Como fazer shadowing</div>
+        <div class="step-list">
+          <div class="step-item"><div class="step-num">1</div><div class="step-text"><strong>Escolha um áudio</strong> com transcrição — podcast, TED Talk, ou notícia da BBC.</div></div>
+          <div class="step-item"><div class="step-num">2</div><div class="step-text"><strong>Ouça 2 vezes</strong> sem fazer nada. Preste atenção no ritmo e entonação, não só nas palavras.</div></div>
+          <div class="step-item"><div class="step-num">3</div><div class="step-text"><strong>Repita em voz alta</strong> junto com o áudio. Imite tudo — sotaque, velocidade, pausas.</div></div>
+          <div class="step-item"><div class="step-num">4</div><div class="step-text"><strong>Grave-se.</strong> É desconfortável, mas ouvir sua própria voz é o que mais acelera a melhora.</div></div>
+          <div class="step-item"><div class="step-num">5</div><div class="step-text"><strong>15 minutos por dia</strong> é suficiente para ver resultado em semanas. Consistência primeiro.</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label">Sua nota de hoje</div>
+        <textarea class="shadow-input" rows="3" id="shadow-note" placeholder="Anote uma dificuldade ou observação sobre sua pronúncia..."></textarea>
+        <button class="btn btn-ghost" onclick="saveShadowNote()">Salvar nota</button>
+      </div>
+    </div>
+
+    <!-- ROTINA -->
+    <div class="screen" id="screen-rotina">
+      <div class="screen-header">
+        <div class="screen-title">📅 Rotina</div>
+        <div class="screen-sub">20 minutos diários valem mais que qualquer intensivão</div>
+      </div>
+
+      <div class="card" style="text-align:center;margin-bottom:14px;">
+        <svg class="day-ring" viewBox="0 0 80 80">
+          <circle class="ring-bg" cx="40" cy="40" r="32"/>
+          <circle class="ring-fill" id="ring" cx="40" cy="40" r="32" stroke-dasharray="201" stroke-dashoffset="201"/>
+        </svg>
+        <div style="font-family:var(--font-display);font-size:24px;font-weight:800;color:var(--text);" id="check-pct">0%</div>
+        <div style="font-size:13px;color:var(--text3);margin-top:2px;" id="check-count">0 de 6 tarefas</div>
+      </div>
+
+      <div id="checklist">
+        <div class="check-item" onclick="toggleTask(this)">
+          <div class="check-circle"></div>
+          <div class="check-text">☀️ 5 flashcards no Anki</div>
+          <div class="check-time">5 min</div>
+        </div>
+        <div class="check-item" onclick="toggleTask(this)">
+          <div class="check-circle"></div>
+          <div class="check-text">🎧 Podcast enquanto se prepara</div>
+          <div class="check-time">15 min</div>
+        </div>
+        <div class="check-item" onclick="toggleTask(this)">
+          <div class="check-circle"></div>
+          <div class="check-text">📖 Ler um artigo em inglês</div>
+          <div class="check-time">10 min</div>
+        </div>
+        <div class="check-item" onclick="toggleTask(this)">
+          <div class="check-circle"></div>
+          <div class="check-text">🎬 Episódio com legenda em inglês</div>
+          <div class="check-time">20 min</div>
+        </div>
+        <div class="check-item" onclick="toggleTask(this)">
+          <div class="check-circle"></div>
+          <div class="check-text">✍️ Escrever 3 frases no diário</div>
+          <div class="check-time">5 min</div>
+        </div>
+        <div class="check-item" onclick="toggleTask(this)">
+          <div class="check-circle"></div>
+          <div class="check-text">🔊 10 minutos de shadowing</div>
+          <div class="check-time">10 min</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RECURSOS -->
+    <div class="screen" id="screen-recursos">
+      <div class="screen-header">
+        <div class="screen-title">🔗 Recursos</div>
+        <div class="screen-sub">O que realmente funciona</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Aplicativos</div>
+        <div class="resource-row">
+          <div class="resource-icon" style="background:var(--blue-dim);">🃏</div>
+          <div><div class="resource-name">Anki <span class="resource-tag tag-free">Grátis</span></div><div class="resource-desc">Repetição espaçada. O melhor para vocabulário duradouro.</div></div>
+        </div>
+        <div class="resource-row">
+          <div class="resource-icon" style="background:var(--accent-dim);">🦉</div>
+          <div><div class="resource-name">Duolingo <span class="resource-tag tag-free">Grátis</span></div><div class="resource-desc">Bom para manter o hábito. Não é suficiente sozinho.</div></div>
+        </div>
+        <div class="resource-row">
+          <div class="resource-icon" style="background:var(--coral-dim);">🗣️</div>
+          <div><div class="resource-name">HelloTalk <span class="resource-tag tag-free">Grátis</span></div><div class="resource-desc">Conversação com nativos. Troca de idiomas.</div></div>
+        </div>
+        <div class="resource-row">
+          <div class="resource-icon" style="background:var(--amber-dim);">📖</div>
+          <div><div class="resource-name">LingQ <span class="resource-tag tag-paid">Pago</span></div><div class="resource-desc">Leitura extensiva com lookup de vocabulário integrado.</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label">YouTube</div>
+        <div class="resource-row">
+          <div class="resource-icon" style="background:var(--coral-dim);">🎓</div>
+          <div><div class="resource-name">English with Lucy</div><div class="resource-desc">Pronúncia, vocabulário e shadowing. Para intermediários.</div></div>
+        </div>
+        <div class="resource-row">
+          <div class="resource-icon" style="background:var(--blue-dim);">📻</div>
+          <div><div class="resource-name">BBC Learning English</div><div class="resource-desc">Notícias simplificadas, expressões idiomáticas.</div></div>
+        </div>
+        <div class="resource-row">
+          <div class="resource-icon" style="background:var(--purple-dim);">🎤</div>
+          <div><div class="resource-name">Rachel's English</div><div class="resource-desc">Pronúncia americana. Excelente para shadowing.</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-label">Podcasts</div>
+        <div class="resource-row">
+          <div class="resource-icon" style="background:var(--blue-dim);">🎙️</div>
+          <div><div class="resource-name">6 Minute English</div><div class="resource-desc">Episódios curtos da BBC. Ótimo para iniciantes.</div></div>
+        </div>
+        <div class="resource-row">
+          <div class="resource-icon" style="background:var(--accent-dim);">🌎</div>
+          <div><div class="resource-name">All Ears English</div><div class="resource-desc">Inglês americano natural e gírias do cotidiano.</div></div>
+        </div>
+        <div class="resource-row">
+          <div class="resource-icon" style="background:var(--amber-dim);">🎧</div>
+          <div><div class="resource-name">ESL Pod</div><div class="resource-desc">Histórias cotidianas com vocabulário explicado. Nível A2–B2.</div></div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:0;">
+        <div class="card-label">Dicas bônus</div>
+        <div class="dica-card" style="background:transparent;padding:0;margin:0;border:none;">
+          <div class="dica-icon">🧠</div>
+          <div class="dica-body"><div class="title">Não traduza mentalmente</div><div class="desc">Pense diretamente em inglês. Associe palavras a imagens, não ao português.</div></div>
+        </div>
+        <div class="dica-card" style="background:transparent;padding:0;margin-top:12px;border:none;">
+          <div class="dica-icon">🎯</div>
+          <div class="dica-body"><div class="title">Aprenda frases, não palavras</div><div class="desc">"Take care" é mais útil do que saber "take" e "care" separados. Blocos de linguagem.</div></div>
+        </div>
+        <div class="dica-card" style="background:transparent;padding:0;margin-top:12px;border:none;">
+          <div class="dica-icon">❌</div>
+          <div class="dica-body"><div class="title">Não espere estar pronto para falar</div><div class="desc">Errar é o processo. Quanto antes você produzir o idioma, mais rápido evolui.</div></div>
+        </div>
+        <div class="dica-card" style="background:transparent;padding:0;margin-top:12px;border:none;">
+          <div class="dica-icon">📅</div>
+          <div class="dica-body"><div class="title">Consistência acima de tudo</div><div class="desc">20 min por dia por 1 ano superam qualquer semana intensiva. Construa o hábito primeiro.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLANO PERSONALIZADO -->
+    <div class="screen" id="screen-plano">
+      <div class="screen-header">
+        <div class="screen-title">🗺️ Meu Plano</div>
+        <div class="screen-sub">Personalizado para seu nível e objetivo</div>
+      </div>
+
+      <!-- QUIZ -->
+      <div id="quiz-container">
+
+        <!-- Progresso do quiz -->
+        <div class="quiz-progress" id="quiz-progress">
+          <div class="quiz-dot" id="qdot-0"></div>
+          <div class="quiz-dot" id="qdot-1"></div>
+          <div class="quiz-dot" id="qdot-2"></div>
+          <div class="quiz-dot" id="qdot-3"></div>
+        </div>
+
+        <!-- Passo 1: Nível -->
+        <div class="quiz-step" id="qstep-0" style="display:block;">
+          <div class="quiz-title">Qual é seu nível atual?</div>
+          <div class="quiz-sub">Seja honesto — isso vai montar o plano certo pra você.</div>
+          <button class="option-btn" onclick="selectOption(0,0)">
+            <div class="option-emoji">🐣</div>
+            <div class="option-text"><div class="option-title">Iniciante</div><div class="option-desc">Sei quase nada ou só o básico do básico</div></div>
+          </button>
+          <button class="option-btn" onclick="selectOption(0,1)">
+            <div class="option-emoji">📖</div>
+            <div class="option-text"><div class="option-title">Básico</div><div class="option-desc">Entendo frases simples, mas travo ao falar</div></div>
+          </button>
+          <button class="option-btn" onclick="selectOption(0,2)">
+            <div class="option-emoji">💬</div>
+            <div class="option-text"><div class="option-title">Intermediário</div><div class="option-desc">Me viro, mas erro muito e tenho limitações</div></div>
+          </button>
+          <button class="option-btn" onclick="selectOption(0,3)">
+            <div class="option-emoji">🚀</div>
+            <div class="option-text"><div class="option-title">Avançado</div><div class="option-desc">Falo bem, quero polir sotaque e fluência</div></div>
+          </button>
+        </div>
+
+        <!-- Passo 2: Objetivo -->
+        <div class="quiz-step" id="qstep-1" style="display:none;">
+          <div class="quiz-title">Qual é o seu objetivo?</div>
+          <div class="quiz-sub">Isso define quais habilidades priorizar.</div>
+          <button class="option-btn" onclick="selectOption(1,0)">
+            <div class="option-emoji">💼</div>
+            <div class="option-text"><div class="option-title">Trabalho / Carreira</div><div class="option-desc">Reuniões, e-mails, entrevistas em inglês</div></div>
+          </button>
+          <button class="option-btn" onclick="selectOption(1,1)">
+            <div class="option-emoji">✈️</div>
+            <div class="option-text"><div class="option-title">Viagem</div><div class="option-desc">Me comunicar bem fora do Brasil</div></div>
+          </button>
+          <button class="option-btn" onclick="selectOption(1,2)">
+            <div class="option-emoji">🎮</div>
+            <div class="option-text"><div class="option-title">Entretenimento</div><div class="option-desc">Séries, jogos, músicas, redes sociais</div></div>
+          </button>
+          <button class="option-btn" onclick="selectOption(1,3)">
+            <div class="option-emoji">🌍</div>
+            <div class="option-text"><div class="option-title">Fluência geral</div><div class="option-desc">Quero falar inglês naturalmente no geral</div></div>
+          </button>
+        </div>
+
+        <!-- Passo 3: Tempo disponível -->
+        <div class="quiz-step" id="qstep-2" style="display:none;">
+          <div class="quiz-title">Quanto tempo você tem por dia?</div>
+          <div class="quiz-sub">Seja realista. Consistência bate intensidade.</div>
+          <button class="option-btn" onclick="selectOption(2,0)">
+            <div class="option-emoji">⚡</div>
+            <div class="option-text"><div class="option-title">15 minutos</div><div class="option-desc">Pouco tempo, mas todo dia</div></div>
+          </button>
+          <button class="option-btn" onclick="selectOption(2,1)">
+            <div class="option-emoji">🕐</div>
+            <div class="option-text"><div class="option-title">30 minutos</div><div class="option-desc">Tempo razoável para estudar</div></div>
+          </button>
+          <button class="option-btn" onclick="selectOption(2,2)">
+            <div class="option-emoji">🕑</div>
+            <div class="option-text"><div class="option-title">1 hora</div><div class="option-desc">Tenho bastante disponibilidade</div></div>
+          </button>
+          <button class="option-btn" onclick="selectOption(2,3)">
+            <div class="option-emoji">🔥</div>
+            <div class="option-text"><div class="option-title">Mais de 1 hora</div><div class="option-desc">Quero acelerar ao máximo</div></div>
+          </button>
+        </div>
+
+        <!-- Passo 4: Maior dificuldade -->
+        <div class="quiz-step" id="qstep-3" style="display:none;">
+          <div class="quiz-title">Sua maior dificuldade?</div>
+          <div class="quiz-sub">Vamos focar mais no que mais te trava.</div>
+          <button class="option-btn" onclick="selectOption(3,0)">
+            <div class="option-emoji">🗣️</div>
+            <div class="option-text"><div class="option-title">Falar / Pronúncia</div><div class="option-desc">Travo na hora de abrir a boca</div></div>
+          </button>
+          <button class="option-btn" onclick="selectOption(3,1)">
+            <div class="option-emoji">👂</div>
+            <div class="option-text"><div class="option-title">Escutar / Entender</div><div class="option-desc">Nativo fala rápido demais</div></div>
+          </button>
+          <button class="option-btn" onclick="selectOption(3,2)">
+            <div class="option-emoji">📚</div>
+            <div class="option-text"><div class="option-title">Vocabulário</div><div class="option-desc">Falta de palavras na hora H</div></div>
+          </button>
+          <button class="option-btn" onclick="selectOption(3,3)">
+            <div class="option-emoji">📝</div>
+            <div class="option-text"><div class="option-title">Gramática / Escrita</div><div class="option-desc">Erro muito na hora de escrever</div></div>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- RESULTADO DO PLANO -->
+      <div id="plan-result" style="display:none;">
+        <div class="card accent-border" style="margin-bottom:14px;">
+          <div class="card-label">Seu perfil</div>
+          <div style="font-family:var(--font-display);font-size:18px;font-weight:800;color:var(--text);margin-bottom:4px;" id="plan-title">—</div>
+          <div style="font-size:13px;color:var(--text2);line-height:1.5;" id="plan-summary">—</div>
+        </div>
+
+        <div class="plan-card">
+          <div class="card-label" style="margin-bottom:12px;">Seu plano semanal</div>
+          <div class="plan-week" id="plan-week"></div>
+        </div>
+
+        <div class="plan-card">
+          <div class="card-label" style="margin-bottom:12px;">Foco principal</div>
+          <div id="plan-focus"></div>
+        </div>
+
+        <button class="btn btn-ghost" style="margin-top:4px;margin-bottom:0;" onclick="resetPlan()">🔄 Refazer o questionário</button>
+      </div>
+
+    </div>
+
+    <!-- CONQUISTAS -->
+    <div class="screen" id="screen-conquistas">
+      <div class="screen-header">
+        <div class="screen-title">🏆 Conquistas</div>
+        <div class="screen-sub">Desbloqueie todas completando o app</div>
+      </div>
+      <div class="achiev-grid" id="achiev-grid"></div>
+    </div>
+
+    <!-- EVOLUÇÃO -->
+    <div class="screen" id="screen-evolucao">
+      <div class="screen-header">
+        <div class="screen-title">📊 Evolução</div>
+        <div class="screen-sub">Seu progresso dos últimos 7 dias</div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stats-box">
+          <div class="stats-box-val" id="evo-xp">0</div>
+          <div class="stats-box-label">XP Total</div>
+        </div>
+        <div class="stats-box">
+          <div class="stats-box-val" id="evo-words">0</div>
+          <div class="stats-box-label">Palavras</div>
+        </div>
+        <div class="stats-box">
+          <div class="stats-box-val" id="evo-streak">0</div>
+          <div class="stats-box-label">Sequência</div>
+        </div>
+      </div>
+
+      <div class="graph-wrap">
+        <div class="graph-title">XP por dia</div>
+        <div class="graph-bars" id="graph-bars"></div>
+        <div style="display:flex;justify-content:space-between;" id="graph-days"></div>
+      </div>
+
+      <div class="graph-wrap">
+        <div class="graph-title">Resumo geral</div>
+        <div style="display:flex;flex-direction:column;gap:10px;" id="evo-summary"></div>
+      </div>
+
+      <div class="card accent-border">
+        <div class="card-label">Nível atual</div>
+        <div style="font-family:var(--font-display);font-size:18px;font-weight:800;color:var(--text);margin-bottom:8px;" id="evo-level">Nível 1 — Iniciante</div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text3);margin-bottom:6px;">
+          <span>Progresso</span>
+          <span id="evo-xp-label">0 / 100 XP</span>
+        </div>
+        <div class="xp-bar-wrap"><div class="xp-bar" id="evo-xp-bar" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- ERROS CLÁSSICOS -->
+    <div class="screen" id="screen-erros">
+      <div class="screen-header">
+        <div class="screen-title">🚫 Erros Clássicos</div>
+        <div class="screen-sub">Os erros que todo brasileiro comete em inglês</div>
+      </div>
+
+      <div class="mistake-card">
+        <div class="mistake-header"><div class="mistake-num">1</div><div class="mistake-topic">Idade — "I have X years"</div></div>
+        <div class="mistake-row">
+          <div class="mistake-box wrong"><div class="mistake-box-label">❌ Errado</div><div class="mistake-phrase">I have 25 years old.</div></div>
+          <div class="mistake-box right"><div class="mistake-box-label">✅ Correto</div><div class="mistake-phrase">I am 25 years old.</div></div>
+        </div>
+        <div class="mistake-explanation">Em português dizemos "tenho X anos" mas em inglês usa-se o verbo "to be". Você não possui anos — você é essa idade.</div>
+        <div class="mistake-tip">💡 Pense: "I AM 25" — identidade, não posse.</div>
+      </div>
+
+      <div class="mistake-card">
+        <div class="mistake-header"><div class="mistake-num">2</div><div class="mistake-topic">Calor/Frio — "I am hot"</div></div>
+        <div class="mistake-row">
+          <div class="mistake-box wrong"><div class="mistake-box-label">❌ Errado</div><div class="mistake-phrase">It is hot today. I am very hot.</div></div>
+          <div class="mistake-box right"><div class="mistake-box-label">✅ Correto</div><div class="mistake-phrase">It is hot today. I feel hot.</div></div>
+        </div>
+        <div class="mistake-explanation">"I am hot" pode ter conotação sensual. Para dizer que está com calor, use "I feel hot" ou "I'm feeling hot". Para o tempo: "It's hot today" está correto.</div>
+        <div class="mistake-tip">💡 Sensação no corpo: use "I feel" ou "I'm feeling".</div>
+      </div>
+
+      <div class="mistake-card">
+        <div class="mistake-header"><div class="mistake-num">3</div><div class="mistake-topic">Saudades — "I miss you"</div></div>
+        <div class="mistake-row">
+          <div class="mistake-box wrong"><div class="mistake-box-label">❌ Errado</div><div class="mistake-phrase">I have saudades of you.</div></div>
+          <div class="mistake-box right"><div class="mistake-box-label">✅ Correto</div><div class="mistake-phrase">I miss you so much.</div></div>
+        </div>
+        <div class="mistake-explanation">"Saudade" não tem tradução exata em inglês. A forma mais próxima é "I miss you" (para pessoas) ou "I miss it" (para lugares/coisas).</div>
+        <div class="mistake-tip">💡 "I've been missing you" transmite um sentimento mais profundo.</div>
+      </div>
+
+      <div class="mistake-card">
+        <div class="mistake-header"><div class="mistake-num">4</div><div class="mistake-topic">Ir embora — "I will go"</div></div>
+        <div class="mistake-row">
+          <div class="mistake-box wrong"><div class="mistake-box-label">❌ Errado</div><div class="mistake-phrase">I need to go. I will go now.</div></div>
+          <div class="mistake-box right"><div class="mistake-box-label">✅ Correto</div><div class="mistake-phrase">I need to go. I'm heading out.</div></div>
+        </div>
+        <div class="mistake-explanation">"I will go" é gramaticalmente correto, mas nativo diz "I'm heading out", "I gotta go", "I'm taking off" ou "I'm out". O "will" soa muito formal para esse contexto.</div>
+        <div class="mistake-tip">💡 Use: "I gotta go!" — natural e casual.</div>
+      </div>
+
+      <div class="mistake-card">
+        <div class="mistake-header"><div class="mistake-num">5</div><div class="mistake-topic">Dupla negação</div></div>
+        <div class="mistake-row">
+          <div class="mistake-box wrong"><div class="mistake-box-label">❌ Errado</div><div class="mistake-phrase">I don't know nothing about it.</div></div>
+          <div class="mistake-box right"><div class="mistake-box-label">✅ Correto</div><div class="mistake-phrase">I don't know anything about it.</div></div>
+        </div>
+        <div class="mistake-explanation">Em português dupla negação reforça a ideia. Em inglês, duas negações se cancelam e viram positivo. Nunca use "don't + nothing/nobody/nowhere".</div>
+        <div class="mistake-tip">💡 Don't + anything / nobody → Don't + anybody.</div>
+      </div>
+
+      <div class="mistake-card">
+        <div class="mistake-header"><div class="mistake-num">6</div><div class="mistake-topic">Open/Close a luz</div></div>
+        <div class="mistake-row">
+          <div class="mistake-box wrong"><div class="mistake-box-label">❌ Errado</div><div class="mistake-phrase">Open the light. Close the TV.</div></div>
+          <div class="mistake-box right"><div class="mistake-box-label">✅ Correto</div><div class="mistake-phrase">Turn on the light. Turn off the TV.</div></div>
+        </div>
+        <div class="mistake-explanation">Em português "abrimos" e "fechamos" aparelhos. Em inglês usa-se "turn on" (ligar) e "turn off" (desligar). Open/close é para portas, janelas e coisas físicas.</div>
+        <div class="mistake-tip">💡 Eletrônicos: always turn on/off, never open/close.</div>
+      </div>
+
+      <div class="mistake-card">
+        <div class="mistake-header"><div class="mistake-num">7</div><div class="mistake-topic">Make / Do — confusão</div></div>
+        <div class="mistake-row">
+          <div class="mistake-box wrong"><div class="mistake-box-label">❌ Errado</div><div class="mistake-phrase">I need to make my homework.</div></div>
+          <div class="mistake-box right"><div class="mistake-box-label">✅ Correto</div><div class="mistake-phrase">I need to do my homework.</div></div>
+        </div>
+        <div class="mistake-explanation">"Make" é para criar algo (make a cake, make a decision). "Do" é para tarefas e atividades (do homework, do the dishes, do exercise).</div>
+        <div class="mistake-tip">💡 Make = criar. Do = executar tarefa.</div>
+      </div>
+
+      <div class="mistake-card">
+        <div class="mistake-header"><div class="mistake-num">8</div><div class="mistake-topic">Pedir licença — "Excuse me"</div></div>
+        <div class="mistake-row">
+          <div class="mistake-box wrong"><div class="mistake-box-label">❌ Errado</div><div class="mistake-phrase">Sorry. Sorry. Sorry. (o tempo todo)</div></div>
+          <div class="mistake-box right"><div class="mistake-box-label">✅ Correto</div><div class="mistake-phrase">Excuse me! / Pardon me!</div></div>
+        </div>
+        <div class="mistake-explanation">"Sorry" é para se desculpar por algo errado. Para pedir passagem ou chamar atenção de alguém, use "Excuse me". Brasileiro usa "sorry" pra tudo e soa estranho.</div>
+        <div class="mistake-tip">💡 Passar na frente = Excuse me. Errou algo = Sorry.</div>
+      </div>
+
+    </div>
+
+  </div><!-- /screens -->
+
+  <!-- Bottom Nav -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" id="nav-home" onclick="goTo('home')">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-label">Início</span>
+    </button>
+    <button class="nav-item" id="nav-flashcards" onclick="goTo('flashcards')">
+      <span class="nav-icon">🃏</span>
+      <span class="nav-label">Flashcards</span>
+    </button>
+    <button class="nav-item" id="nav-rotina" onclick="goTo('rotina')">
+      <span class="nav-icon">📅</span>
+      <span class="nav-label">Rotina</span>
+    </button>
+    <button class="nav-item" id="nav-evolucao" onclick="goTo('evolucao')">
+      <span class="nav-icon">📊</span>
+      <span class="nav-label">Evolução</span>
+    </button>
+    <button class="nav-item" id="nav-erros" onclick="goTo('erros')">
+      <span class="nav-icon">🚫</span>
+      <span class="nav-label">Erros</span>
+    </button>
+  </nav>
+
+  <!-- Focus Mode Overlay -->
+  <div class="focus-overlay" id="focus-overlay">
+    <div class="focus-container" id="focus-main">
+      <div class="focus-mode-icon">🎯</div>
+      <div class="focus-title">Modo Foco</div>
+      <div class="focus-sub">25 minutos de concentração total.<br>Sem distrações, só você e o inglês.</div>
+      <div class="focus-timer" id="focus-timer">25:00</div>
+      <div class="focus-progress-wrap">
+        <div class="focus-progress-bar" id="focus-progress" style="width:0%"></div>
+      </div>
+      <div class="focus-btns">
+        <button class="focus-btn focus-btn-primary" id="focus-start-btn" onclick="toggleFocusTimer()">Iniciar</button>
+        <button class="focus-btn focus-btn-secondary" onclick="exitFocusMode()">Sair</button>
+      </div>
+      <div class="focus-quote" id="focus-quote">"The expert in anything was once a beginner." — Helen Hayes</div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:8px;text-align:center;">Som de fundo</div>
+      <div class="focus-ambient">
+        <button class="ambient-btn" onclick="toggleAmbient('conversation')">🗣️ Conversa</button>
+        <button class="ambient-btn" onclick="toggleAmbient('podcast')">🎙️ Podcast</button>
+        <button class="ambient-btn" onclick="toggleAmbient('story')">📖 História</button>
+        <button class="ambient-btn" onclick="toggleAmbient('rain')">🌧️ Chuva</button>
+        <button class="ambient-btn" onclick="toggleAmbient('off')">🔇 Silêncio</button>
+      </div>
+      <div id="audio-info" style="margin-top:10px;font-size:11px;color:var(--accent);text-align:center;display:none;"></div>
+    </div>
+    <div class="focus-summary" id="focus-summary">
+      <div class="focus-summary-title">🎉 Sessão completa!</div>
+      <div class="focus-stats">
+        <div class="focus-stat"><div class="focus-stat-val" id="focus-time-done">25</div><div class="focus-stat-label">Minutos</div></div>
+        <div class="focus-stat"><div class="focus-stat-val">+50</div><div class="focus-stat-label">XP</div></div>
+      </div>
+      <button class="focus-btn focus-btn-primary" style="width:100%;margin-bottom:12px;" onclick="exitFocusMode()">Voltar ao app</button>
+      <button class="focus-btn focus-btn-secondary" style="width:100%;" onclick="restartFocus()">Mais 25 minutos</button>
+    </div>
+  </div>
+
+</div><!-- /app -->
+
+<script>
+const cards = [
+  {word:"Serendipity",sentence:"It was pure serendipity that we met.",translation:"Serendipidade — descoberta feliz por acaso"},
+  {word:"Resilience",sentence:"She showed great resilience after the loss.",translation:"Resiliência — capacidade de se recuperar"},
+  {word:"Forthcoming",sentence:"He wasn't very forthcoming with details.",translation:"Comunicativo / disposto a falar"},
+  {word:"Threshold",sentence:"We're on the threshold of a new era.",translation:"Limiar / limite / soleira da porta"},
+  {word:"Daunting",sentence:"The task seemed daunting at first.",translation:"Assustador / intimidador"},
+  {word:"Subtle",sentence:"There's a subtle difference between them.",translation:"Sutil — difícil de perceber, delicado"},
+  {word:"Leverage",sentence:"Use your skills as leverage in negotiations.",translation:"Alavancagem / usar como vantagem"},
+  {word:"Eager",sentence:"She was eager to learn new things.",translation:"Ansioso / empolgado / ávido"},
+  {word:"Compelling",sentence:"It's a compelling argument to consider.",translation:"Convincente / irresistível / fascinante"},
+  {word:"Overwhelming",sentence:"The support was truly overwhelming.",translation:"Avassalador / muito intenso / esmagador"},
+  {word:"Breakthrough",sentence:"Scientists made a major breakthrough.",translation:"Avanço decisivo / grande descoberta"},
+  {word:"Stumble upon",sentence:"I stumbled upon this great article.",translation:"Encontrar por acaso / tropeçar em"},
+];
+
+const shadowPhrases = [
+  {q:"The most important thing is not to stop questioning.",a:"Albert Einstein"},
+  {q:"In the middle of every difficulty lies opportunity.",a:"Albert Einstein"},
+  {q:"It always seems impossible until it's done.",a:"Nelson Mandela"},
+  {q:"The future belongs to those who believe in their dreams.",a:"Eleanor Roosevelt"},
+  {q:"Try not to become a man of success, but rather a man of value.",a:"Albert Einstein"},
+  {q:"You miss 100% of the shots you don't take.",a:"Wayne Gretzky"},
+  {q:"Whether you think you can or you can't, you're right.",a:"Henry Ford"},
+  {q:"The only way to do great work is to love what you do.",a:"Steve Jobs"},
+];
+
+let state = {
+  xp: 0, words: 0, sessions: 0, mins: 0, tasks: 0, streak: 0,
+  fcIdx: 0, fcDone: 0, fcRevealed: false, phraseIdx: 0,
+  notifActive: false, notifHour: 20, notifMin: 0,
+  notifMsg: 'Hora do inglês! 🇺🇸 Não quebre sua sequência!',
+  lastNotif: 0, unlocked: [],
+};
+
+function save() { try { localStorage.setItem('eh', JSON.stringify(state)); } catch(e){} }
+function load() { try { const d = localStorage.getItem('eh'); if(d) state = {...state,...JSON.parse(d)}; } catch(e){} }
+load();
+
+function updateStats() {
+  document.getElementById('stat-words').textContent = state.words;
+  document.getElementById('stat-sessions').textContent = state.sessions;
+  document.getElementById('stat-mins').textContent = state.mins;
+  document.getElementById('stat-tasks').textContent = state.tasks;
+  document.getElementById('streak-count').textContent = state.streak;
+  const xpPct = Math.min(100, Math.round(state.xp % 100));
+  document.getElementById('xp-bar').style.width = xpPct + '%';
+  document.getElementById('xp-text').textContent = (state.xp % 100) + ' / 100 XP';
+  const lvl = Math.floor(state.xp / 100) + 1;
+  const lvlNames = ['Iniciante','Básico','Intermediário','Avançado','Fluente'];
+  document.getElementById('level-text').textContent = 'Nível ' + lvl + ' — ' + (lvlNames[Math.min(lvl-1, lvlNames.length-1)]);
+}
+
+function addXP(n) { state.xp += n; updateStats(); save(); checkAchievements(); }
+
+function goTo(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const screen = document.getElementById('screen-' + id);
+  const nav = document.getElementById('nav-' + id);
+  if(screen) screen.classList.add('active');
+  if(nav) nav.classList.add('active');
+  if(id === 'flashcards') loadCard();
+  if(id === 'evolucao') renderGraph();
+}
+
+// ── Graph / Evolução ──
+function renderGraph() {
+  document.getElementById('evo-xp').textContent    = state.xp;
+  document.getElementById('evo-words').textContent  = state.words;
+  document.getElementById('evo-streak').textContent = state.streak;
+
+  const lvl = Math.floor(state.xp / 100) + 1;
+  const lvlNames = ['Iniciante','Básico','Intermediário','Avançado','Fluente'];
+  document.getElementById('evo-level').textContent   = 'Nível ' + lvl + ' — ' + (lvlNames[Math.min(lvl-1,4)]);
+  const pct = state.xp % 100;
+  document.getElementById('evo-xp-bar').style.width  = pct + '%';
+  document.getElementById('evo-xp-label').textContent = pct + ' / 100 XP';
+
+  // 7-day XP history
+  const today   = new Date();
+  const dayNames = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  let history = [];
+  try { history = JSON.parse(localStorage.getItem('eu_xp_history') || '[]'); } catch(e) {}
+  const todayKey  = today.toDateString();
+  let todayEntry  = history.find(d => d.date === todayKey);
+  if(!todayEntry) { todayEntry = {date:todayKey, xp: state.xp}; history.push(todayEntry); }
+  else { todayEntry.xp = state.xp; }
+  history = history.slice(-7);
+  try { localStorage.setItem('eu_xp_history', JSON.stringify(history)); } catch(e) {}
+
+  const days7 = [];
+  for(let i = 6; i >= 0; i--) {
+    const d = new Date(today); d.setDate(today.getDate() - i);
+    const key   = d.toDateString();
+    const entry = history.find(h => h.date === key);
+    days7.push({ label: dayNames[d.getDay()], xp: entry ? entry.xp : 0, isToday: i === 0 });
+  }
+
+  const maxXP  = Math.max(...days7.map(d => d.xp), 10);
+  const barsEl = document.getElementById('graph-bars');
+  const daysEl = document.getElementById('graph-days');
+  barsEl.innerHTML = ''; daysEl.innerHTML = '';
+
+  days7.forEach(d => {
+    const h = Math.max(6, Math.round((d.xp / maxXP) * 110));
+    const wrap = document.createElement('div');
+    wrap.className = 'graph-bar-wrap';
+    wrap.innerHTML = `<div class="graph-bar-val">${d.xp > 0 ? d.xp : ''}</div><div class="graph-bar${d.isToday?' today':''}" style="height:${h}px"></div>`;
+    barsEl.appendChild(wrap);
+    const lbl = document.createElement('div');
+    lbl.style.cssText = 'flex:1;text-align:center;font-size:10px;color:'+(d.isToday?'var(--accent)':'var(--text3)')+';font-weight:'+(d.isToday?'700':'400');
+    lbl.textContent = d.isToday ? 'Hoje' : d.label;
+    daysEl.appendChild(lbl);
+  });
+
+  const items = [
+    {icon:'⏱️', label:'Minutos estudados',   val: state.mins + ' min'},
+    {icon:'🎯',  label:'Sessões completadas', val: state.sessions},
+    {icon:'✅', label:'Tarefas concluídas',  val: state.tasks},
+    {icon:'🏆', label:'Conquistas',          val: (state.unlocked||[]).length + ' / 12'},
+  ];
+  document.getElementById('evo-summary').innerHTML = items.map(it =>
+    `<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);">
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text2);"><span style="font-size:16px;">${it.icon}</span>${it.label}</div>
+      <div style="font-family:var(--font-display);font-size:14px;font-weight:700;color:var(--accent);">${it.val}</div>
+    </div>`
+  ).join('');
+}
+
+// ── Flashcards ──
+function loadCard() {
+  const c = cards[state.fcIdx % cards.length];
+  document.getElementById('fc-word').textContent = c.word;
+  document.getElementById('fc-sentence').textContent = '"' + c.sentence + '"';
+  document.getElementById('fc-translation').textContent = c.translation;
+  document.getElementById('fc-translation').style.display = 'none';
+  document.getElementById('fc-hint').style.display = 'block';
+  ['btn-hard','btn-ok','btn-easy'].forEach(id => document.getElementById(id).style.display = 'none');
+  state.fcRevealed = false;
+}
+
+function revealCard() {
+  if(state.fcRevealed) return;
+  document.getElementById('fc-translation').style.display = 'block';
+  document.getElementById('fc-hint').style.display = 'none';
+  ['btn-hard','btn-ok','btn-easy'].forEach(id => document.getElementById(id).style.display = 'block');
+  state.fcRevealed = true;
+}
+
+function rateCard(r) {
+  state.fcIdx++;
+  state.fcDone++;
+  state.words++;
+  addXP(r === 'easy' ? 5 : r === 'ok' ? 3 : 1);
+  const pct = Math.min(100, Math.round((state.fcDone % 10) / 10 * 100));
+  document.getElementById('fc-bar').style.width = pct + '%';
+  document.getElementById('fc-label').textContent = (state.fcDone % 10) + '/10';
+  if(state.fcDone % 10 === 0) { state.sessions++; state.mins += 5; }
+  save();
+  updateStats();
+  loadCard();
+}
+
+// ── Shadowing ──
+function nextPhrase() {
+  state.phraseIdx = (state.phraseIdx + 1) % shadowPhrases.length;
+  const p = shadowPhrases[state.phraseIdx];
+  document.getElementById('shadow-phrase').textContent = '"' + p.q + '"';
+  document.getElementById('shadow-author').textContent = '— ' + p.a;
+}
+
+function saveShadow() {
+  state.sessions++;
+  state.mins += 15;
+  addXP(10);
+  save();
+  const btn = document.querySelector('#screen-shadowing .btn-accent');
+  btn.textContent = '✓ Registrado!';
+  btn.style.background = '#2BC472';
+  setTimeout(() => { btn.textContent = 'Fiz o shadowing ✓'; btn.style.background = ''; }, 2000);
+}
+
+function saveShadowNote() {
+  const note = document.getElementById('shadow-note').value.trim();
+  if(!note) return;
+  document.getElementById('shadow-note').value = '';
+  addXP(3);
+  showToast('📝 Nota salva!');
+}
+
+// ── Rotina ──
+function toggleTask(el) {
+  const circle = el.querySelector('.check-circle');
+  const text = el.querySelector('.check-text');
+  const isDone = circle.classList.contains('checked');
+  circle.classList.toggle('checked', !isDone);
+  text.classList.toggle('done', !isDone);
+  el.classList.toggle('done', !isDone);
+  if(!isDone) { state.tasks++; addXP(8); }
+  else { state.tasks = Math.max(0, state.tasks - 1); }
+  const items = document.querySelectorAll('#checklist .check-item');
+  const done = document.querySelectorAll('#checklist .check-circle.checked').length;
+  const pct = Math.round(done / items.length * 100);
+  document.getElementById('check-pct').textContent = pct + '%';
+  document.getElementById('check-count').textContent = done + ' de ' + items.length + ' tarefas';
+  const circumference = 201;
+  const offset = circumference - (pct / 100 * circumference);
+  document.getElementById('ring').setAttribute('stroke-dashoffset', offset);
+  if(done === items.length) { state.streak++; addXP(50); }
+  save(); updateStats();
+}
+
+// ── Toast ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── Notification Sheet ──
+function openNotifSheet() {
+  document.getElementById('notif-overlay').classList.add('show');
+  updateNotifStatus();
+}
+function closeNotifSheet(e) {
+  if(e.target === document.getElementById('notif-overlay')) document.getElementById('notif-overlay').classList.remove('show');
+}
+function saveNotif() {
+  const h = parseInt(document.getElementById('notif-hour').value);
+  const m = parseInt(document.getElementById('notif-min').value);
+  const msg = document.getElementById('notif-msg').value.trim() || 'Hora do inglês! 🇺🇸';
+  if(isNaN(h)||isNaN(m)) return;
+  state.notifHour = h;
+  state.notifMin = m;
+  state.notifMsg = msg;
+  state.notifActive = true;
+  save();
+  updateNotifStatus();
+  document.getElementById('notif-overlay').classList.remove('show');
+  const hh = String(h).padStart(2,'0');
+  const mm = String(m).padStart(2,'0');
+  showToast(`🔔 Lembrete ativado para ${hh}:${mm}!`);
+}
+function cancelNotif() {
+  state.notifActive = false;
+  save();
+  updateNotifStatus();
+  document.getElementById('notif-overlay').classList.remove('show');
+  showToast('Lembrete desativado.');
+}
+function updateNotifStatus() {
+  const s = document.getElementById('notif-status');
+  const dot = document.getElementById('notif-dot');
+  const txt = document.getElementById('notif-status-text');
+  const btn = document.getElementById('notif-btn');
+  if(state.notifActive) {
+    const hh = String(state.notifHour||20).padStart(2,'0');
+    const mm = String(state.notifMin||0).padStart(2,'0');
+    s.className = 'notif-status active';
+    dot.className = 'notif-dot on';
+    txt.textContent = `Ativo — todo dia às ${hh}:${mm}`;
+    btn.style.background = 'var(--accent-dim)';
+    btn.style.borderColor = 'rgba(74,229,154,0.3)';
+    btn.style.color = 'var(--accent)';
+    btn.innerHTML = '🔔 ' + hh + ':' + mm;
+  } else {
+    s.className = 'notif-status inactive';
+    dot.className = 'notif-dot off';
+    txt.textContent = 'Nenhum lembrete ativo';
+    btn.style.background = '';
+    btn.style.borderColor = '';
+    btn.style.color = '';
+    btn.innerHTML = '🔔 Lembrete';
+  }
+}
+
+function startNotifChecker() {
+  updateNotifStatus();
+  setInterval(() => {
+    if(!state.notifActive) return;
+    const now = new Date();
+    const h = now.getHours();
+    const m = now.getMinutes();
+    const s = now.getSeconds();
+    if(h === (state.notifHour||20) && m === (state.notifMin||0) && s < 10) {
+      const lastNotif = state.lastNotif || 0;
+      if(Date.now() - lastNotif > 50000) {
+        state.lastNotif = Date.now();
+        save();
+        showToast('🇺🇸 ' + (state.notifMsg || 'Hora do inglês!'));
+        if('Notification' in window && Notification.permission === 'granted') {
+          new Notification('English Hub', { body: state.notifMsg || 'Hora do inglês! 🇺🇸', icon: '' });
+        } else if('Notification' in window && Notification.permission !== 'denied') {
+          Notification.requestPermission().then(p => {
+            if(p === 'granted') new Notification('English Hub', { body: state.notifMsg || 'Hora do inglês! 🇺🇸' });
+          });
+        }
+      }
+    }
+  }, 5000);
+}
+
+// ── Achievements ──
+const ACHIEVEMENTS = [
+  { id:'first_word',   icon:'🌱', name:'Primeira Palavra',    desc:'Aprenda seu primeiro flashcard',         check: s => s.words >= 1 },
+  { id:'ten_words',    icon:'📚', name:'Estudioso',           desc:'Aprenda 10 palavras',                    check: s => s.words >= 10 },
+  { id:'fifty_words',  icon:'🎓', name:'Vocabulário Sólido',  desc:'Aprenda 50 palavras',                    check: s => s.words >= 50 },
+  { id:'first_shadow', icon:'🎙️', name:'Primeira Voz',        desc:'Complete sua primeira sessão de shadowing', check: s => s.sessions >= 1 },
+  { id:'streak3',      icon:'🔥', name:'Em Chamas',           desc:'3 dias seguidos de estudo',              check: s => s.streak >= 3 },
+  { id:'streak7',      icon:'💎', name:'Uma Semana Inteira',  desc:'7 dias seguidos — você é constante!',    check: s => s.streak >= 7 },
+  { id:'streak30',     icon:'👑', name:'Rei da Consistência', desc:'30 dias seguidos. Incrível!',            check: s => s.streak >= 30 },
+  { id:'tasks10',      icon:'✅', name:'Checklist Master',    desc:'Complete 10 tarefas da rotina',          check: s => s.tasks >= 10 },
+  { id:'xp100',        icon:'⭐', name:'Nível 2',             desc:'Chegou ao nível 2!',                     check: s => s.xp >= 100 },
+  { id:'xp500',        icon:'🌟', name:'Nível 6',             desc:'500 XP conquistados!',                   check: s => s.xp >= 500 },
+  { id:'plan',         icon:'🗺️', name:'Planejador',          desc:'Criou seu plano personalizado',          check: s => s.xp >= 20 },
+  { id:'mins60',       icon:'⏱️', name:'1 Hora de Estudo',   desc:'Acumule 60 minutos de prática',          check: s => s.mins >= 60 },
+];
+
+function initAchievements() {
+  if(!state.unlocked) state.unlocked = [];
+  renderAchievements();
+}
+
+function renderAchievements() {
+  const grid = document.getElementById('achiev-grid');
+  if(!grid) return;
+  grid.innerHTML = ACHIEVEMENTS.map(a => {
+    const isUnlocked = (state.unlocked||[]).includes(a.id);
+    return `<div class="achiev-card ${isUnlocked?'unlocked':'locked'}">
+      <div class="achiev-icon">${a.icon}</div>
+      <div class="achiev-name">${a.name}</div>
+      <div class="achiev-desc">${a.desc}</div>
+      ${isUnlocked ? '<div class="achiev-unlocked-badge">✓ Desbloqueada</div>' : ''}
+    </div>`;
+  }).join('');
+}
+
+function checkAchievements() {
+  if(!state.unlocked) state.unlocked = [];
+  ACHIEVEMENTS.forEach(a => {
+    if(!state.unlocked.includes(a.id) && a.check(state)) {
+      state.unlocked.push(a.id);
+      save();
+      showAchievement(a);
+      renderAchievements();
+    }
+  });
+}
+
+function showAchievement(a) {
+  const popup = document.getElementById('achiev-popup');
+  document.getElementById('achiev-icon').textContent = a.icon;
+  document.getElementById('achiev-name').textContent = a.name;
+  document.getElementById('achiev-desc').textContent = a.desc;
+  popup.classList.add('show');
+  setTimeout(() => popup.classList.remove('show'), 4000);
+}
+
+// ── Plano Personalizado ──
+var quizAnswers = [null, null, null, null];
+var quizStep = 0;
+
+function selectOption(step, choice) {
+  quizAnswers[step] = choice;
+  // highlight selected button
+  var btns = document.querySelectorAll('#qstep-' + step + ' .option-btn');
+  for(var i=0; i<btns.length; i++) {
+    btns[i].classList.toggle('selected', i === choice);
+  }
+  // advance after short delay
+  setTimeout(function() { nextQuizStep(step); }, 300);
+}
+
+function nextQuizStep(current) {
+  var currentEl = document.getElementById('qstep-' + current);
+  var dotEl = document.getElementById('qdot-' + current);
+  if(dotEl) dotEl.classList.add('done');
+  if(currentEl) currentEl.style.display = 'none';
+
+  var next = current + 1;
+  if(next < 4) {
+    var nextEl = document.getElementById('qstep-' + next);
+    if(nextEl) nextEl.style.display = 'block';
+    quizStep = next;
+    var screen = document.getElementById('screen-plano');
+    if(screen) screen.scrollTop = 0;
+  } else {
+    buildPlan();
+  }
+}
+
+function buildPlan() {
+  var lvl  = quizAnswers[0];
+  var obj  = quizAnswers[1];
+  var time = quizAnswers[2];
+  var diff = quizAnswers[3];
+
+  var lvlNames  = ['Iniciante','Básico','Intermediário','Avançado'];
+  var objNames  = ['trabalho','viagem','entretenimento','fluência geral'];
+  var timeMap   = [15, 30, 60, 90];
+  var mins      = timeMap[time] || 30;
+  var titles    = ['Começando do zero 🐣','Construindo a base 📖','Desbloqueando a fluência 💬','Polindo para nativo 🚀'];
+
+  document.getElementById('plan-title').textContent   = titles[lvl] || titles[0];
+  document.getElementById('plan-summary').textContent =
+    'Nível ' + lvlNames[lvl] + ' com foco em ' + objNames[obj] + '. ' + mins + ' min/dia — consistência é tudo!';
+
+  var days = ['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+  var plansData = {
+    15: [
+      ['Anki','10 flashcards','Leitura','1 parágrafo em inglês'],
+      ['Shadowing','1 frase imitada','Podcast','6 Minute English'],
+      ['Anki','10 flashcards','Série','1 cena c/ legenda EN'],
+      ['Shadowing','2 frases novas','Diário','3 frases em inglês'],
+      ['Anki','10 flashcards','YouTube','5 min em inglês'],
+      ['Revisão','Flashcards difíceis','Série','1 episódio c/ legenda EN'],
+      ['Descanso','Só música em inglês 🎧'],
+    ],
+    30: [
+      ['Anki','15 flashcards','Shadowing','1 frase + repetição'],
+      ['Podcast','6 Min English','Diário','5 frases em inglês'],
+      ['Anki','15 flashcards','Série','1 episódio c/ legenda EN'],
+      ['Shadowing','2-3 frases','Vocabulário','5 phrasal verbs'],
+      ['Anki','15 flashcards','Conversação','Praktika 20 min'],
+      ['Revisão semanal','Palavras difíceis','Série','Ep. sem legenda'],
+      ['Descanso','Filme c/ legenda EN 🎬'],
+    ],
+    60: [
+      ['Anki','20 flashcards','Shadowing','10 min','Leitura','Artigo BBC'],
+      ['Podcast','All Ears English','Conversação','Praktika 20 min','Vocabulário','5 expressões'],
+      ['Anki','20 flashcards','Série','2 episódios c/ legenda EN'],
+      ['Shadowing','15 min','Gramática','1 tópico novo','Diário','1 parágrafo'],
+      ['Anki','20 flashcards','Conversação','Praktika 30 min','YouTube','15 min'],
+      ['Revisão','Semana completa','Filme','C/ legenda EN'],
+      ['Imersão total','Dia 100% em inglês 🌊'],
+    ],
+    90: [
+      ['Anki','30 flashcards','Shadowing','15 min','Leitura','Artigo completo','Diário','1 parágrafo'],
+      ['Podcast','30 min','Conversação','Praktika 30 min','Gramática','1 tópico'],
+      ['Série','2-3 eps c/ legenda EN','Shadowing','Cenas da série'],
+      ['Conversação','Praktika 45 min','Vocabulário','10 expressões + phrasal verbs'],
+      ['Anki','30 flashcards','YouTube','30 min sem legenda','Diário','Seu dia em inglês'],
+      ['Revisão semanal','Tudo aprendido','Filme','30 min sem legenda'],
+      ['Imersão total','Dia 100% em inglês 🔥'],
+    ],
+  };
+
+  var colors = ['plan-tag-green','plan-tag-blue','plan-tag-amber','plan-tag-purple'];
+  var weekData = plansData[mins] || plansData[30];
+  var weekHtml = '';
+  for(var d=0; d<weekData.length; d++) {
+    var tasks = weekData[d];
+    var taskHtml = '';
+    for(var t=0; t<tasks.length; t+=2) {
+      var desc = tasks[t+1] || '';
+      taskHtml += '<div class="plan-task"><span class="plan-highlight">' + tasks[t] + '</span>';
+      if(desc) taskHtml += '<span class="plan-tag ' + colors[Math.floor(t/2)%4] + '">' + desc + '</span>';
+      taskHtml += '</div>';
+    }
+    weekHtml += '<div class="plan-day"><div class="plan-day-label">' + days[d] + '</div><div class="plan-day-tasks">' + taskHtml + '</div></div>';
+  }
+  document.getElementById('plan-week').innerHTML = weekHtml;
+
+  var focusTips = [
+    '<div class="imersao-item"><div class="imersao-emoji">🗣️</div><div class="imersao-body"><div class="title">Prioridade: Fala</div><div class="desc">Shadowing todo dia. Praktika 3x por semana. Grave sua voz e compare com nativos.</div></div></div>',
+    '<div class="imersao-item"><div class="imersao-emoji">👂</div><div class="imersao-body"><div class="title">Prioridade: Escuta</div><div class="desc">Podcasts diários. Assista séries sem legenda por 5 min/dia. Shadowing com foco em ritmo.</div></div></div>',
+    '<div class="imersao-item"><div class="imersao-emoji">📚</div><div class="imersao-body"><div class="title">Prioridade: Vocabulário</div><div class="desc">Anki 20+ cards/dia com frases completas. 5 phrasal verbs por semana. Leia sobre temas que você gosta.</div></div></div>',
+    '<div class="imersao-item"><div class="imersao-emoji">📝</div><div class="imersao-body"><div class="title">Prioridade: Gramática</div><div class="desc">Escreva 1 parágrafo em inglês por dia. Foque em tempos verbais. Leia muito para absorver estruturas.</div></div></div>',
+  ];
+  document.getElementById('plan-focus').innerHTML = focusTips[diff] || focusTips[0];
+
+  document.getElementById('quiz-container').style.display = 'none';
+  document.getElementById('plan-result').style.display   = 'block';
+
+  var screen = document.getElementById('screen-plano');
+  if(screen) screen.scrollTop = 0;
+
+  addXP(20);
+  save();
+}
+
+function resetPlan() {
+  quizAnswers = [null, null, null, null];
+  quizStep = 0;
+  // reset step visibility
+  for(var i=0; i<4; i++) {
+    var el = document.getElementById('qstep-' + i);
+    var dot = document.getElementById('qdot-' + i);
+    if(el)  { el.style.display = (i===0) ? 'block' : 'none'; }
+    if(dot) { dot.classList.remove('done'); }
+  }
+  // clear selections
+  document.querySelectorAll('.option-btn').forEach(function(b){ b.classList.remove('selected'); });
+  document.getElementById('quiz-container').style.display = 'block';
+  document.getElementById('plan-result').style.display   = 'none';
+  var screen = document.getElementById('screen-plano');
+  if(screen) screen.scrollTop = 0;
+}
+
+// ── Focus Mode ──
+let focusTimer = null;
+let focusSeconds = 25 * 60;
+let focusTotal = 25 * 60;
+let focusRunning = false;
+
+const FOCUS_QUOTES = [
+  '"The expert in anything was once a beginner." — Helen Hayes',
+  '"Success is the sum of small efforts repeated day in and day out." — Robert Collier',
+  '"Don\'t watch the clock; do what it does. Keep going." — Sam Levenson',
+  '"You don\'t have to be great to start, but you have to start to be great." — Zig Ziglar',
+  '"The future depends on what you do today." — Mahatma Gandhi',
+];
+
+function startFocusMode() {
+  document.getElementById('focus-overlay').classList.add('active');
+  document.getElementById('focus-main').style.display = '';
+  document.getElementById('focus-summary').classList.remove('show');
+  document.getElementById('focus-quote').textContent = FOCUS_QUOTES[Math.floor(Math.random() * FOCUS_QUOTES.length)];
+  resetFocusTimer();
+}
+
+function exitFocusMode() {
+  if(focusRunning) { clearInterval(focusTimer); focusRunning = false; }
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  if(ambientAudio && ambientAudio.stop) ambientAudio.stop();
+  ambientAudio = null; ambientType = null;
+  document.querySelectorAll('.ambient-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('audio-info').style.display = 'none';
+  document.getElementById('focus-overlay').classList.remove('active');
+  document.getElementById('focus-main').style.display = '';
+  document.getElementById('focus-summary').classList.remove('show');
+}
+
+function toggleFocusTimer() {
+  if(focusRunning) { pauseFocusTimer(); } else { playFocusTimer(); }
+}
+
+function playFocusTimer() {
+  focusRunning = true;
+  document.getElementById('focus-start-btn').textContent = 'Pausar';
+  focusTimer = setInterval(function() {
+    focusSeconds--;
+    if(focusSeconds <= 0) { completeFocus(); return; }
+    updateFocusDisplay();
+  }, 1000);
+}
+
+function pauseFocusTimer() {
+  focusRunning = false;
+  clearInterval(focusTimer);
+  document.getElementById('focus-start-btn').textContent = 'Retomar';
+}
+
+function resetFocusTimer() {
+  clearInterval(focusTimer);
+  focusSeconds = focusTotal;
+  focusRunning = false;
+  document.getElementById('focus-start-btn').textContent = 'Iniciar';
+  updateFocusDisplay();
+}
+
+function updateFocusDisplay() {
+  const mins = Math.floor(focusSeconds / 60);
+  const secs = focusSeconds % 60;
+  document.getElementById('focus-timer').textContent = String(mins).padStart(2,'0') + ':' + String(secs).padStart(2,'0');
+  const pct = ((focusTotal - focusSeconds) / focusTotal) * 100;
+  document.getElementById('focus-progress').style.width = pct + '%';
+}
+
+function completeFocus() {
+  clearInterval(focusTimer);
+  focusRunning = false;
+  state.mins += 25;
+  state.sessions++;
+  addXP(50);
+  save();
+  document.getElementById('focus-main').style.display = 'none';
+  document.getElementById('focus-summary').classList.add('show');
+  if(ambientAudio) { ambientAudio.pause(); ambientAudio = null; }
+  showToast('🎉 Sessão completa! +50 XP');
+}
+
+function restartFocus() {
+  document.getElementById('focus-main').style.display = '';
+  document.getElementById('focus-summary').classList.remove('show');
+  document.getElementById('focus-quote').textContent = FOCUS_QUOTES[Math.floor(Math.random() * FOCUS_QUOTES.length)];
+  resetFocusTimer();
+}
+
+// ── Ambient Audio using Web Speech API + Web Audio API ──
+var ambientAudio = null;
+var ambientCtx = null;
+var ambientSpeaking = false;
+var ambientType = null;
+
+var ENGLISH_TEXTS = {
+  conversation: [
+    "Hey, how's it going? Pretty good, thanks. Did you catch the game last night? Yeah, it was awesome. The team played really well. I know, right? That last minute goal was incredible. Totally. Hey, are you going to the party on Friday? I'm thinking about it. Should be fun. Definitely. Let me know if you need a ride. Sure, I'll text you.",
+    "Good morning! Can I get a coffee please? Sure, what size? Medium, and can you add an extra shot? Of course. That'll be four fifty. Here you go. Thanks! Have a great day! You too! See you tomorrow.",
+    "Excuse me, do you know where the nearest subway station is? Yes, just go two blocks down, then turn left. You'll see it right there. Oh perfect, thank you so much! No problem at all. Have a good one!",
+    "What are you up to this weekend? Not much, maybe just relax at home. I've been so busy lately. I get that. Work has been crazy for me too. We should hang out sometime soon. Definitely, let's make a plan. How about next Saturday? That works for me. Great, I'll send you a message.",
+  ],
+  podcast: [
+    "Welcome back to another episode. Today we're talking about habits and how small changes can make a huge difference in your daily life. Research shows that if you focus on just one percent improvement every day, after one year you'll be thirty seven times better. That's the power of compound growth. So let's dive in.",
+    "The key to learning any language is consistency. You don't need to study for hours every day. Just fifteen to twenty minutes of focused practice is enough. The most important thing is to do it every single day without skipping. Your brain learns through repetition and sleep. So study a little, sleep, and repeat.",
+    "Did you know that the average person learns a new language much faster through immersion? That means surrounding yourself with the language as much as possible. Listen to music, watch movies, change your phone settings. Every little bit counts and adds up over time.",
+  ],
+  story: [
+    "Once upon a time, in a small town by the sea, there lived a young woman named Emily. She loved to read books and dream of traveling the world. Every evening she would sit by her window, watching the ships sail into the horizon. One day, a stranger arrived in town carrying a worn leather bag. He walked into the bookshop where Emily worked and asked for a very specific book.",
+    "It was a cold Tuesday morning when Daniel decided to change his life. He had been working the same job for ten years, always dreaming but never acting. That morning, he opened his laptop and booked a one-way ticket to Japan. His friends thought he was crazy. His family worried. But Daniel had never felt more certain about anything in his life.",
+    "The old library had been closed for thirty years when Maya first noticed the light flickering in the top floor window. She was twelve years old, curious and fearless. She told her best friend about it, but nobody believed her. So one afternoon, after school, she decided to investigate on her own.",
+  ],
+};
+
+var speechIdx = { conversation: 0, podcast: 0, story: 0 };
+
+function speakText(type) {
+  if(!window.speechSynthesis || ambientType !== type) return;
+  var texts = ENGLISH_TEXTS[type];
+  var idx = speechIdx[type] % texts.length;
+  var text = texts[idx];
+  speechIdx[type]++;
+
+  var utt = new SpeechSynthesisUtterance(text);
+  utt.lang = 'en-US';
+  utt.rate = 0.88;
+  utt.pitch = 1;
+  utt.volume = 0.9;
+
+  // Pick English voice if available
+  var voices = window.speechSynthesis.getVoices();
+  var engVoice = voices.find(v => v.lang.startsWith('en') && !v.lang.includes('IN'));
+  if(engVoice) utt.voice = engVoice;
+
+  utt.onend = function() {
+    if(ambientType === type) {
+      setTimeout(function() { speakText(type); }, 2000);
+    }
+  };
+  window.speechSynthesis.speak(utt);
+}
+
+function makeRain() {
+  ambientCtx = new (window.AudioContext || window.webkitAudioContext)();
+  var bufferSize = 4096;
+  var node = ambientCtx.createScriptProcessor(bufferSize, 1, 1);
+  node.onaudioprocess = function(e) {
+    var output = e.outputBuffer.getChannelData(0);
+    for(var i = 0; i < bufferSize; i++) {
+      output[i] = (Math.random() * 2 - 1) * 0.15;
+    }
+  };
+  // Low-pass filter for rain feel
+  var filter = ambientCtx.createBiquadFilter();
+  filter.type = 'lowpass';
+  filter.frequency.value = 800;
+  node.connect(filter);
+  filter.connect(ambientCtx.destination);
+  ambientAudio = { node, filter, stop: function() {
+    try { node.disconnect(); filter.disconnect(); ambientCtx.close(); } catch(e) {}
+  }};
+}
+
+function toggleAmbient(type) {
+  // Stop current
+  document.querySelectorAll('.ambient-btn').forEach(b => b.classList.remove('active'));
+  if(window.speechSynthesis) window.speechSynthesis.cancel();
+  if(ambientAudio && ambientAudio.stop) ambientAudio.stop();
+  else if(ambientAudio && ambientAudio.pause) ambientAudio.pause();
+  ambientAudio = null;
+  ambientType = null;
+
+  var info = document.getElementById('audio-info');
+  info.style.display = 'none';
+
+  if(type === 'off') return;
+
+  event.currentTarget.classList.add('active');
+  ambientType = type;
+
+  var labels = {
+    conversation: '🗣️ Conversa em inglês — nativos americanos',
+    podcast:      '🎙️ Podcast — dicas e histórias em inglês',
+    story:        '📖 História curta narrada em inglês',
+    rain:         '🌧️ Som de chuva para concentração',
+  };
+  info.textContent = '▶ ' + (labels[type] || '');
+  info.style.display = 'block';
+
+  if(type === 'rain') {
+    try { makeRain(); } catch(e) { info.textContent = '⚠️ Áudio não suportado neste navegador'; }
+  } else {
+    // Wait for voices to load
+    if(window.speechSynthesis.getVoices().length === 0) {
+      window.speechSynthesis.onvoiceschanged = function() { speakText(type); };
+    } else {
+      speakText(type);
+    }
+  }
+}
+
+// ── Intro Screen ──
+function initIntro() {
+  const seen = localStorage.getItem('eu_intro_seen');
+  if(seen) {
+    document.getElementById('intro-screen').style.display = 'none';
+    return;
+  }
+  [0,1,2,3].forEach(i => {
+    setTimeout(() => {
+      const el = document.getElementById('istep-' + i);
+      if(el) el.classList.add('show');
+    }, 400 + i * 350);
+  });
+}
+
+function startApp() {
+  localStorage.setItem('eu_intro_seen', '1');
+  const intro = document.getElementById('intro-screen');
+  intro.classList.add('hide');
+  setTimeout(() => { intro.style.display = 'none'; }, 700);
+}
+
+// ── Init ──
+initIntro();
+updateStats();
+loadCard();
+initAchievements();
+startNotifChecker();
+</script>
+</body>
+</html>
